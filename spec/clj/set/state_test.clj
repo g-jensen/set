@@ -6,10 +6,11 @@
 (describe "State for the game of Set"
 
   (it "has an initial state"
-    (should= {:cards (take 12 core/deck)
-              :selected-cards []
-              :deck (drop 12 core/deck)} (initial-state core/deck))
-    (let [deck (rest core/deck)]
-      (should= {:cards (take 12 deck)
+    (let [d1 core/deck
+          d2 (rest core/deck)]
+      (should= {:cards (take 12 d1)
                 :selected-cards []
-                :deck (drop 12 deck)} (initial-state deck)))))
+                :deck (drop 12 d1)} (initial-state d1))
+      (should= {:cards (take 12 d2)
+                :selected-cards []
+                :deck (drop 12 d2)} (initial-state d2)))))
