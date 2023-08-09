@@ -26,6 +26,3 @@
 
 (defn contains-set? [cards]
   (some true? (map set? (combo/combinations cards 3))))
-
-(defn generate-cards []
-  (take 12 (shuffle deck)))

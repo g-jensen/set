@@ -80,18 +80,4 @@
 
   (context "has a deck"
     (it "of length 81"
-      (should= 81 (count deck))))
-
-  (context "generates a random list of cards"
-    (it "of length 12"
-      (let [l1 (generate-cards)
-            l2 (generate-cards)]
-        (should= 12 (count l1))
-        (should= 12 (count l2))
-        (should-not= l1 l2)))
-    (it "with distinct cards"
-      (let [l1 (generate-cards)
-            l2 (generate-cards)]
-        (should (apply distinct? l1))
-        (should (apply distinct? l2))
-        (should-not= l1 l2)))))
+      (should= 81 (count deck)))))
