@@ -2,6 +2,61 @@
   (:require [speclj.core :refer :all]
             [set.core :refer :all]))
 
-(describe "A Clojure test"
-  (it "fails. Fix it!"
-    (should= 0 1)))
+(defn card [color count shape shade]
+  {:color color :count count :shape shape :shade shade})
+
+(describe "The game of set"
+  (describe "determines if a list of cards is a set"
+
+    (it "for less than 3 cards"
+      (should-not (set? []))
+      (should-not (set? [(card :red 1 :oval :solid)]))
+      (should-not (set? [(card :red 1 :oval :solid)
+                         (card :green 2 :diamond :open)])))
+
+    (it "for cards with the same colors"
+      (let [c1 [(card :red 1 :diamond :open)
+                (card :red 2 :oval :solid)
+                (card :red 3 :squiggle :striped)]
+            c2 [(card :green 1 :diamond :open)
+                (card :green 2 :oval :solid)
+                (card :green 2 :squiggle :striped)]
+            c3 [(card :purple 1 :diamond :open)
+                (card :purple 2 :diamond :solid)
+                (card :purple 3 :squiggle :striped)]
+            c4 [(card :red 1 :diamond :open)
+                (card :red 2 :oval :solid)
+                (card :red 3 :squiggle :solid)]]
+        (should (set? c1))
+        (should-not (set? c2))
+        (should-not (set? c3))
+        (should-not (set? c4))))
+
+    (it "for cards with the same count"
+      (let [c1 [(card :red 1 :diamond :open)
+                (card :green 1 :oval :solid)
+                (card :purple 1 :squiggle :striped)]
+            c2 [(card :red 2 :diamond :open)
+                (card :purple 2 :oval :solid)
+                (card :purple 2 :squiggle :striped)]]
+        (should (set? c1))
+        (should-not (set? c2))))
+
+    (it "for cards with the same shape"
+      (let [c1 [(card :red 1 :diamond :open)
+                (card :green 2 :diamond :solid)
+                (card :purple 3 :diamond :striped)]]
+        (should (set? c1))))
+
+    (it "for cards with the same shade"
+      (let [c1 [(card :red 1 :diamond :open)
+                (card :green 2 :oval :open)
+                (card :purple 3 :squiggle :open)]]
+        (should (set? c1))))
+
+    (it "for more than three cards"
+      (let [c1 [(card :red 1 :diamond :open)
+                (card :green 2 :oval :open)
+                (card :purple 3 :squiggle :open)
+                (card :green 3 :squiggle :open)]]
+        (should-not (set? c1))))))
