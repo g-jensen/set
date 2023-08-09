@@ -13,4 +13,12 @@
                 :deck (drop 12 d1)} (initial-state d1))
       (should= {:cards (take 12 d2)
                 :selected-cards []
-                :deck (drop 12 d2)} (initial-state d2)))))
+                :deck (drop 12 d2)} (initial-state d2))))
+
+  (it "selects cards"
+    (let [deck [:a :b :c :d]
+          s1 (initial-state deck)
+          s2 {:cards [:b :c :d] :selected-cards [:a]}]
+      (should= [:a] (:selected-cards (next-state s1 "1")))
+      (should= [:b] (:selected-cards (next-state s1 "2")))
+      (should= [:a :b] (:selected-cards (next-state s2 "1"))))))
