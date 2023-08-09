@@ -2,7 +2,7 @@
   (:require [speclj.core :refer :all]
             [set.core :refer :all]))
 
-(describe "The game of set"
+(describe "The game of Set"
   (context "determines if a list of cards is a set"
 
     (it "for less than 3 cards"
