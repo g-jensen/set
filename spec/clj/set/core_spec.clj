@@ -2,11 +2,8 @@
   (:require [speclj.core :refer :all]
             [set.core :refer :all]))
 
-(defn card [color count shape shade]
-  {:color color :count count :shape shape :shade shade})
-
 (describe "The game of set"
-  (describe "determines if a list of cards is a set"
+  (context "determines if a list of cards is a set"
 
     (it "for less than 3 cards"
       (should-not (set? []))
@@ -59,4 +56,42 @@
                 (card :green 2 :oval :open)
                 (card :purple 3 :squiggle :open)
                 (card :green 3 :squiggle :open)]]
-        (should-not (set? c1))))))
+        (should-not (set? c1)))))
+
+  (context "determines if a list of cards has a set"
+    (it "for an empty list"
+      (should-not (contains-set? [])))
+    (it "for a list of length 3"
+      (let [c1 [(card :red 1 :diamond :open)
+                (card :red 2 :oval :solid)
+                (card :red 3 :squiggle :striped)]]
+        (should (contains-set? c1))))
+    (it "for a list of length 4"
+      (let [c1 [(card :red 1 :diamond :open)
+                (card :red 2 :oval :solid)
+                (card :red 3 :squiggle :striped)
+                (card :red 4 :squiggle :striped)]
+            c2 [(card :red 1 :diamond :open)
+                (card :green 2 :oval :solid)
+                (card :red 3 :squiggle :striped)
+                (card :green 4 :squiggle :striped)]]
+        (should (contains-set? c1))
+        (should-not (contains-set? c2)))))
+
+  (context "has a deck"
+    (it "of length 81"
+      (should= 81 (count deck))))
+
+  (context "generates a random list of cards"
+    (it "of length 12"
+      (let [l1 (generate-cards)
+            l2 (generate-cards)]
+        (should= 12 (count l1))
+        (should= 12 (count l2))
+        (should-not= l1 l2)))
+    (it "with distinct cards"
+      (let [l1 (generate-cards)
+            l2 (generate-cards)]
+        (should (apply distinct? l1))
+        (should (apply distinct? l2))
+        (should-not= l1 l2)))))
