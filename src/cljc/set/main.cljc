@@ -1,4 +1,4 @@
-(ns set.core
+(ns set.main
   (:require [clojure.math.combinatorics :as combo]))
 
 (def attributes {:color [:red :green :purple]

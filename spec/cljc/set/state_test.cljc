@@ -1,7 +1,7 @@
-(ns clj.set.state-test
+(ns set.state-test
   (:require [speclj.core :refer :all]
             [set.state :refer :all]
-            [set.core :as core]))
+            [set.main :as core]))
 
 (describe "State for the game of Set"
 

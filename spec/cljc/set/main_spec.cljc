@@ -1,6 +1,6 @@
-(ns clj.set.core-spec
+(ns set.main-spec
   (:require [speclj.core :refer :all]
-            [set.core :refer :all]))
+            [set.main :refer :all]))
 
 (describe "The game of Set"
   (context "determines if a list of cards is a set"

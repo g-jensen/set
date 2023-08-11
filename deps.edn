@@ -1,5 +1,5 @@
 {
- :paths ["src/clj" "src/cljs"]
+ :paths ["src/cljc" "src/cljs"]
  :deps {
         org.clojure/clojure       {:mvn/version "1.11.1"}
         org.clojure/clojurescript {:mvn/version "1.11.54"}
@@ -13,7 +13,7 @@
                    :ns-default build}
            :run {:main-opts ["-m" "cljs.main" "-c" "set.core" "-r"]}
            :test {:extra-deps {speclj/speclj {:mvn/version "3.3.2"}}
-                  :extra-paths ["spec/"]}
+                  :extra-paths ["spec/cljc" "spec/cljs"]}
            :spec {:main-opts ["-m" "speclj.main" "-c"]}
            }
  }
