@@ -33,7 +33,8 @@
 
   (it "deselects cards if 3 are selected"
     (let [s1 {:cards [:a :b :c :d]
-              :selected-cards [:a :b]}]
+              :selected-cards [:a :b]
+              :shuffle-fn (constantly nil)}]
       (should= [] (:selected-cards (next-state s1 3)))))
 
   (it "replaces selected cards if selected is set"
@@ -41,10 +42,12 @@
           set (take 3 deck)
           s1 {:cards set
               :selected-cards (take 2 set)
-              :deck [:a :b :c]}
+              :deck [:a :b :c]
+              :shuffle-fn (constantly nil)}
           s2 {:cards (apply concat [[:hello] set [:bye]])
               :selected-cards (rest set)
-              :deck [:a :b :c :d]}]
+              :deck [:a :b :c :d]
+              :shuffle-fn (constantly nil)}]
       (should= [:b :c :a] (:cards (next-state s1 3)))
       (should= [:hello :a :b :c :bye]
                (:cards (next-state s2 2)))))
@@ -54,7 +57,17 @@
           set (take 3 deck)
           s1 {:cards set
               :selected-cards (take 2 set)
-              :deck [:a :b :c]}
-          s2 (update s1 :deck conj :d)]
-      (should= [] (:deck (next-state s1 3)))
-      (should= [:d] (:deck (next-state s2 3))))))
+              :deck [:a :b :c :d]}]
+      (should= [:d] (:deck (next-state s1 3)))))
+
+  (it "restocks an empty deck"
+    (let [deck main/deck
+          set (take 3 deck)
+          s1 {:cards set
+              :selected-cards (take 2 set)
+              :deck [:a :b :c]
+              :src-deck [:a :b :c :d :e :f]
+              :shuffle-fn identity}
+          s2 (assoc s1 :shuffle-fn #(concat (rest %) [(first %)]))]
+      (should= [:a :b :c :d :e :f] (:deck (next-state s1 3)))
+      (should= [:b :c :d :e :f :a] (:deck (next-state s2 3))))))
