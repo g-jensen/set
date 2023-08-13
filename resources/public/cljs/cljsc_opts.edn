@@ -1,0 +1,1 @@
+{:output-dir "resources/public/cljs/", :cache-analysis true, :sources ["spec/cljs" "src/cljs"], :optimizations :none, :cljs.closure/watch-triggered-build? true, :verbose false, :output-to "resources/public/cljs/dev.js", :specs true, :source-map true, :watch-fn #'runner.cljs/on-dev-compiled, :pretty-print true}
