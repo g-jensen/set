@@ -9,15 +9,16 @@
 
   (it "has an initial state"
     (let [d1 main/deck
-          d2 (rest main/deck)]
+          d2 (rest main/deck)
+          shuffled-d2 (bad-shuffle d2)]
       (should= {:cards (take 12 d1)
                 :selected-cards []
                 :deck (drop 12 d1)
                 :src-deck d1
                 :shuffle-fn identity} (initial-state d1 identity))
-      (should= {:cards (take 12 d2)
+      (should= {:cards (take 12 shuffled-d2)
                 :selected-cards []
-                :deck (drop 12 d2)
+                :deck (drop 12 shuffled-d2)
                 :src-deck d2
                 :shuffle-fn bad-shuffle} (initial-state d2 bad-shuffle))))
 
