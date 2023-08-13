@@ -24,6 +24,12 @@
       (replace-with-map cards (zipmap selected (take 3 deck)))
       cards)))
 
+(defn- update-deck [state]
+  (let [deck (:deck state)]
+    (if (main/set? (:selected-cards state))
+      (drop 3 deck)
+      deck)))
+
 (defn- update-selected [state]
   (let [selected (:selected-cards state)]
     (if (= 3 (count selected))
@@ -34,4 +40,5 @@
   (as-> state state
         (assoc state :selected-cards (select state input))
         (assoc state :cards (replace-cards state))
+        (assoc state :deck (update-deck state))
         (assoc state :selected-cards (update-selected state))))
