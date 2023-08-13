@@ -34,4 +34,17 @@
   (it "deselects cards if 3 are selected"
     (let [s1 {:cards [:a :b :c :d]
               :selected-cards [:a :b]}]
-      (should= [] (:selected-cards (next-state s1 3))))))
+      (should= [] (:selected-cards (next-state s1 3)))))
+
+  (it "replaces selected cards if selected is set"
+    (let [deck main/deck
+          set (take 3 deck)
+          s1 {:cards set
+              :selected-cards (take 2 set)
+              :deck [:a :b :c]}
+          s2 {:cards (apply concat [[:hello] set [:bye]])
+              :selected-cards (rest set)
+              :deck [:a :b :c :d]}]
+      (should= [:b :c :a] (:cards (next-state s1 3)))
+      (should= [:hello :a :b :c :bye]
+               (:cards (next-state s2 2))))))
