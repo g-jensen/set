@@ -1,10 +1,12 @@
 (ns set.state
   (:require [set.main :as main]))
 
-(defn initial-state [deck]
+(defn initial-state [deck shuffle-fn]
   {:cards (take 12 deck)
    :selected-cards []
-   :deck (drop 12 deck)})
+   :deck (drop 12 deck)
+   :src-deck deck
+   :shuffle-fn shuffle-fn})
 
 (defn- select [state input]
   (let [card (nth (:cards state) (dec input))

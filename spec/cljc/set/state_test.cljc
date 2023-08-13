@@ -3,6 +3,8 @@
             [set.state :refer :all]
             [set.main :as main]))
 
+(def bad-shuffle #(conj (vec (rest %)) (first %)))
+
 (describe "State for the game of Set"
 
   (it "has an initial state"
@@ -10,14 +12,18 @@
           d2 (rest main/deck)]
       (should= {:cards (take 12 d1)
                 :selected-cards []
-                :deck (drop 12 d1)} (initial-state d1))
+                :deck (drop 12 d1)
+                :src-deck d1
+                :shuffle-fn identity} (initial-state d1 identity))
       (should= {:cards (take 12 d2)
                 :selected-cards []
-                :deck (drop 12 d2)} (initial-state d2))))
+                :deck (drop 12 d2)
+                :src-deck d2
+                :shuffle-fn bad-shuffle} (initial-state d2 bad-shuffle))))
 
   (it "selects a new card"
     (let [deck [:a :b :c :d]
-          s1 (initial-state deck)
+          s1 (initial-state deck identity)
           s2 {:cards deck :selected-cards [:a]}]
       (should= [:a] (:selected-cards (next-state s1 1)))
       (should= [:b] (:selected-cards (next-state s1 2)))
@@ -68,6 +74,6 @@
               :deck [:a :b :c]
               :src-deck [:a :b :c :d :e :f]
               :shuffle-fn identity}
-          s2 (assoc s1 :shuffle-fn #(concat (rest %) [(first %)]))]
+          s2 (assoc s1 :shuffle-fn bad-shuffle)]
       (should= [:a :b :c :d :e :f] (:deck (next-state s1 3)))
       (should= [:b :c :d :e :f :a] (:deck (next-state s2 3))))))
