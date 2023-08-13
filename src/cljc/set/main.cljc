@@ -2,7 +2,7 @@
   (:require [clojure.math.combinatorics :as combo]))
 
 (def attributes {:color [:red :green :purple]
-                 :count [1 2 3]
+                 :count [:one :two :three]
                  :shape [:diamond :oval :squiggle]
                  :shade [:open :solid :striped]})
 
