@@ -2,6 +2,7 @@
 /lib
 /classes
 /checkouts
+/.idea
 pom.xml
 *.jar
 *.class
@@ -9,3 +10,5 @@ pom.xml
 .lein-failures
 .lein-plugins
 .lein-repl-history
+games.txt
+games.db

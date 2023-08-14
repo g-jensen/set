@@ -1,17 +1,18 @@
 {
- :paths ["src/cljc" "src/cljs" "resources"]
+ :paths ["src/cljs" "src/cljc" "resources"]
  :deps {
-        org.clojure/clojure       {:mvn/version "1.11.1"}
-        org.clojure/clojurescript {:mvn/version "1.11.54"}
-        cljsjs/react-dom {:mvn/version "17.0.2-0"}
+        org.clojure/clojure      {:mvn/version "1.11.1"}
+        org.clojure/clojurescript {:mvn/version "1.10.764"}
         cljsjs/react {:mvn/version "17.0.2-0"}
-        reagent/reagent {:mvn/version "1.2.0"}
+        cljsjs/react-dom {:mvn/version "17.0.2-0"}
+        reagent/reagent {:mvn/version "1.1.0"}
         com.cleancoders.c3kit/apron {:mvn/version "1.0.2"}
         speclj/speclj {:mvn/version "3.3.2"}
         org.clojure/math.combinatorics {:mvn/version "0.2.0"}
         }
  :aliases {
-           :test  {:extra-paths ["spec/cljc" "spec/cljs"]}
+           :test {:extra-paths ["spec/cljs" "spec/cljc"]}
+           :spec {:main-opts ["-m" "speclj.main" "-c"]}
            :cljs-spec {:main-opts ["-m" "runner.cljs" "auto" "development"]}
            :cljs-build {:main-opts ["-m" "runner.cljs" "auto" "production"]}
            }
