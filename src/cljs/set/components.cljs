@@ -1,4 +1,5 @@
-(ns set.components)
+(ns set.components
+  (:require [set.main :as main]))
 (defn main []
   [:div
-   [:h1 "hi"]])
+   [:h1 main/deck]])
