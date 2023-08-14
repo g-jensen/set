@@ -46,7 +46,7 @@
 (defn as-element
   "Turns a vector of Hiccup syntax into a React element. Returns form
   unchanged if it is not a vector."
-  ([form] (p/as-element tmpl/*current-default-compiler* form))
+  ([form] (p/as-element tmpl/default-compiler form))
   ([form compiler] (p/as-element compiler form)))
 
 (defn adapt-react-class
@@ -60,7 +60,7 @@
   "Returns an adapter for a Reagent component, that may be used from
   React, for example in JSX. A single argument, props, is passed to
   the component, converted to a map."
-  ([c] (reactify-component c tmpl/*current-default-compiler*))
+  ([c] (reactify-component c tmpl/default-compiler))
   ([c compiler]
    (assert-some c "Component")
    (comp/reactify-component c compiler)))
@@ -106,7 +106,7 @@
 
   React built-in static methods or properties are automatically defined as statics."
   ([spec]
-   (comp/create-class spec tmpl/*current-default-compiler*))
+   (comp/create-class spec tmpl/default-compiler))
   ([spec compiler]
    (comp/create-class spec compiler)))
 
@@ -318,7 +318,7 @@
          (ifn? f)]}
   (if (.-rswapping a)
     (-> (or (.-rswapfs a)
-            (set! (.-rswapfs a) #js []))
+            (set! (.-rswapfs a) (array)))
         (.push #(apply f % args)))
     (do (set! (.-rswapping a) true)
         (try (swap! a (fn [state]
@@ -364,11 +364,10 @@
   Use `nil` value to restore the original default compiler."
   [compiler]
   (tmpl/set-default-compiler! (if (nil? compiler)
-                                tmpl/class-compiler
+                                tmpl/default-compiler*
                                 compiler)))
 
 (defn render
-  {:deprecated "0.10.0"
-   :superseded-by "reagent.dom/render"}
+  {:deprecated "0.10.0"}
   [& _]
   (throw (js/Error. "Reagent.core/render function was moved to reagent.dom namespace in Reagent v1.0.")))

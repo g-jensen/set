@@ -3,6 +3,7 @@
             [clojure.string :as string]
             [reagent.impl.util :as util :refer [named?]]
             [reagent.impl.component :as comp]
+            [reagent.impl.batching :as batch]
             [reagent.impl.input :as input]
             [reagent.impl.protocols :as p]
             [reagent.ratom :as ratom]
@@ -198,7 +199,6 @@
       (gobj/set tag-name-cache x v)
       v)))
 
-;; This is used for html elements (:h1, :input) and also React component with :>/adapt-react-class
 (defn native-element [parsed argv first ^p/Compiler compiler]
   (let [component (.-tag parsed)
         props (nth argv first nil)
@@ -228,9 +228,6 @@
 (defn raw-element [comp argv compiler]
   (let [props (nth argv 2 nil)
         jsprops (or props #js {})]
-    ;; If we have key attached to vector metadata, copy that to the
-    ;; jsprops.
-    ;; Often the key is already on the jsprops.
     (when-some [key (-> (meta argv) util/get-react-key)]
       (set! (.-key jsprops) key))
     (p/make-element compiler argv comp jsprops 3)))
@@ -303,7 +300,7 @@
         :else x))
 
 (defn create-compiler [opts]
-  (let [id (gensym "reagent-compiler")
+  (let [id (gensym)
         fn-to-element (if (:function-components opts)
                         maybe-function-element
                         reag-element)
@@ -319,8 +316,8 @@
       (make-element [this argv component jsprops first-child]
         (make-element this argv component jsprops first-child)))))
 
-(def class-compiler (create-compiler {}))
-(def ^:dynamic *current-default-compiler* class-compiler)
+(def default-compiler* (create-compiler {}))
+(def ^:dynamic default-compiler default-compiler*)
 
 (defn set-default-compiler! [compiler]
-  (set! *current-default-compiler* compiler))
+  (set! default-compiler compiler))

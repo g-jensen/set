@@ -1,4 +1,4 @@
-// Compiled by ClojureScript 1.11.54 {:optimizations :none}
+// Compiled by ClojureScript 1.10.764 {}
 goog.provide('speclj.platform');
 goog.require('cljs.core');
 goog.require('clojure.string');
@@ -24,8 +24,8 @@ return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMP
 
 (speclj.platform.SpecFailure.cljs$lang$ctorStr = "speclj.platform/SpecFailure");
 
-(speclj.platform.SpecFailure.cljs$lang$ctorPrWriter = (function (this__5327__auto__,writer__5328__auto__,opt__5329__auto__){
-return cljs.core._write.call(null,writer__5328__auto__,"speclj.platform/SpecFailure");
+(speclj.platform.SpecFailure.cljs$lang$ctorPrWriter = (function (this__4369__auto__,writer__4370__auto__,opt__4371__auto__){
+return cljs.core._write.call(null,writer__4370__auto__,"speclj.platform/SpecFailure");
 }));
 
 /**
@@ -51,8 +51,8 @@ return new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMP
 
 (speclj.platform.SpecPending.cljs$lang$ctorStr = "speclj.platform/SpecPending");
 
-(speclj.platform.SpecPending.cljs$lang$ctorPrWriter = (function (this__5327__auto__,writer__5328__auto__,opt__5329__auto__){
-return cljs.core._write.call(null,writer__5328__auto__,"speclj.platform/SpecPending");
+(speclj.platform.SpecPending.cljs$lang$ctorPrWriter = (function (this__4369__auto__,writer__4370__auto__,opt__4371__auto__){
+return cljs.core._write.call(null,writer__4370__auto__,"speclj.platform/SpecPending");
 }));
 
 /**
@@ -83,9 +83,9 @@ return e.message;
 });
 speclj.platform.failure_source = (function speclj$platform$failure_source(e){
 if(cljs.core.truth_(e.fileName)){
-return [cljs.core.str.cljs$core$IFn$_invoke$arity$1(e.fileName),":",cljs.core.str.cljs$core$IFn$_invoke$arity$1((function (){var or__5043__auto__ = e.lineNumber;
-if(cljs.core.truth_(or__5043__auto__)){
-return or__5043__auto__;
+return [cljs.core.str.cljs$core$IFn$_invoke$arity$1(e.fileName),":",cljs.core.str.cljs$core$IFn$_invoke$arity$1((function (){var or__4126__auto__ = e.lineNumber;
+if(cljs.core.truth_(or__4126__auto__)){
+return or__4126__auto__;
 } else {
 return "?";
 }
@@ -100,9 +100,9 @@ return "unkown-file:?";
 }
 });
 speclj.platform.stack_trace = (function speclj$platform$stack_trace(e){
-return cljs.core.rest.call(null,clojure.string.split_lines.call(null,(function (){var or__5043__auto__ = e.stack;
-if(cljs.core.truth_(or__5043__auto__)){
-return or__5043__auto__;
+return cljs.core.rest.call(null,clojure.string.split_lines.call(null,(function (){var or__4126__auto__ = e.stack;
+if(cljs.core.truth_(or__4126__auto__)){
+return or__4126__auto__;
 } else {
 return e.toString();
 }
@@ -112,9 +112,9 @@ speclj.platform.cause = (function speclj$platform$cause(e){
 return null;
 });
 speclj.platform.print_stack_trace = (function speclj$platform$print_stack_trace(e){
-return cljs.core.println.call(null,(function (){var or__5043__auto__ = e.stack;
-if(cljs.core.truth_(or__5043__auto__)){
-return or__5043__auto__;
+return cljs.core.println.call(null,(function (){var or__4126__auto__ = e.stack;
+if(cljs.core.truth_(or__4126__auto__)){
+return or__4126__auto__;
 } else {
 return "missing stack trace";
 }

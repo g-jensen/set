@@ -166,8 +166,7 @@
 
 (defn split
   "Splits string on a regular expression. Optional argument limit is
-  the maximum number of parts. Not lazy. Returns vector of the parts.
-  Trailing empty strings are not returned - pass limit of -1 to return all."
+  the maximum number of splits. Not lazy. Returns vector of the splits."
   ([s re]
      (split s re 0))
     ([s re limit]
@@ -190,7 +189,7 @@
                    (conj parts s))))))))))
 
 (defn split-lines
-  "Splits s on \\n or \\r\\n. Trailing empty lines are not returned."
+  "Splits s on \\n or \\r\\n."
   [s]
   (split s #"\n|\r\n"))
 

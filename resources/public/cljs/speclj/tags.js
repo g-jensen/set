@@ -1,4 +1,4 @@
-// Compiled by ClojureScript 1.11.54 {:optimizations :none}
+// Compiled by ClojureScript 1.10.764 {}
 goog.provide('speclj.tags');
 goog.require('cljs.core');
 goog.require('clojure.set');
@@ -15,14 +15,14 @@ speclj.tags.pass_excludes_QMARK_ = (function speclj$tags$pass_excludes_QMARK_(ex
 if(cljs.core.empty_QMARK_.call(null,excludes)){
 return true;
 } else {
-return cljs.core.not.call(null,cljs.core.some.call(null,(function (p1__5533_SHARP_){
-return cljs.core.contains_QMARK_.call(null,excludes,p1__5533_SHARP_);
+return cljs.core.not.call(null,cljs.core.some.call(null,(function (p1__4797_SHARP_){
+return cljs.core.contains_QMARK_.call(null,excludes,p1__4797_SHARP_);
 }),tags));
 }
 });
 speclj.tags.pass_tag_filter_QMARK_ = (function speclj$tags$pass_tag_filter_QMARK_(var_args){
-var G__5535 = arguments.length;
-switch (G__5535) {
+var G__4799 = arguments.length;
+switch (G__4799) {
 case 1:
 return speclj.tags.pass_tag_filter_QMARK_.cljs$core$IFn$_invoke$arity$1((arguments[(0)]));
 
@@ -55,26 +55,26 @@ return cljs.core.PersistentHashSet.EMPTY;
 }
 });
 speclj.tags.tag_sets_for = (function speclj$tags$tag_sets_for(context){
-var context_seq = cljs.core.tree_seq.call(null,(function (p1__5537_SHARP_){
-return (!((p1__5537_SHARP_ == null)));
-}),(function (p1__5538_SHARP_){
-return cljs.core.deref.call(null,p1__5538_SHARP_.children);
+var context_seq = cljs.core.tree_seq.call(null,(function (p1__4801_SHARP_){
+return (!((p1__4801_SHARP_ == null)));
+}),(function (p1__4802_SHARP_){
+return cljs.core.deref.call(null,p1__4802_SHARP_.children);
 }),context);
 return cljs.core.map.call(null,speclj.tags.tags_for,context_seq);
 });
 speclj.tags.context_with_tags_seq = (function speclj$tags$context_with_tags_seq(context){
-var context_seq = cljs.core.tree_seq.call(null,(function (p1__5539_SHARP_){
-return (!((p1__5539_SHARP_ == null)));
-}),(function (p1__5540_SHARP_){
-return cljs.core.deref.call(null,p1__5540_SHARP_.children);
+var context_seq = cljs.core.tree_seq.call(null,(function (p1__4803_SHARP_){
+return (!((p1__4803_SHARP_ == null)));
+}),(function (p1__4804_SHARP_){
+return cljs.core.deref.call(null,p1__4804_SHARP_.children);
 }),context);
-return cljs.core.map.call(null,(function (p1__5541_SHARP_){
-return cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"context","context",-830191113),new cljs.core.Keyword(null,"tag-set","tag-set",-711527597)],[p1__5541_SHARP_,speclj.tags.tags_for.call(null,p1__5541_SHARP_)]);
+return cljs.core.map.call(null,(function (p1__4805_SHARP_){
+return cljs.core.PersistentHashMap.fromArrays([new cljs.core.Keyword(null,"context","context",-830191113),new cljs.core.Keyword(null,"tag-set","tag-set",-711527597)],[p1__4805_SHARP_,speclj.tags.tags_for.call(null,p1__4805_SHARP_)]);
 }),context_seq);
 });
 speclj.tags.describe_filter = (function speclj$tags$describe_filter(var_args){
-var G__5543 = arguments.length;
-switch (G__5543) {
+var G__4807 = arguments.length;
+switch (G__4807) {
 case 0:
 return speclj.tags.describe_filter.cljs$core$IFn$_invoke$arity$0();
 

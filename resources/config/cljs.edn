@@ -8,7 +8,6 @@
                :sources        ["spec/cljs" "src/cljs"]
                :specs          true
                :verbose        false
-               ;:main           "sample-project.core"
                :watch-fn       runner.cljs/on-dev-compiled
                }
  :production  {

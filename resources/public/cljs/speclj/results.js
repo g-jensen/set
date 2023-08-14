@@ -1,4 +1,4 @@
-// Compiled by ClojureScript 1.11.54 {:optimizations :none}
+// Compiled by ClojureScript 1.10.764 {}
 goog.provide('speclj.results');
 goog.require('cljs.core');
 
@@ -18,8 +18,8 @@ return new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMP
 
 (speclj.results.PassResult.cljs$lang$ctorStr = "speclj.results/PassResult");
 
-(speclj.results.PassResult.cljs$lang$ctorPrWriter = (function (this__5327__auto__,writer__5328__auto__,opt__5329__auto__){
-return cljs.core._write.call(null,writer__5328__auto__,"speclj.results/PassResult");
+(speclj.results.PassResult.cljs$lang$ctorPrWriter = (function (this__4369__auto__,writer__4370__auto__,opt__4371__auto__){
+return cljs.core._write.call(null,writer__4370__auto__,"speclj.results/PassResult");
 }));
 
 /**
@@ -47,8 +47,8 @@ return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMP
 
 (speclj.results.FailResult.cljs$lang$ctorStr = "speclj.results/FailResult");
 
-(speclj.results.FailResult.cljs$lang$ctorPrWriter = (function (this__5327__auto__,writer__5328__auto__,opt__5329__auto__){
-return cljs.core._write.call(null,writer__5328__auto__,"speclj.results/FailResult");
+(speclj.results.FailResult.cljs$lang$ctorPrWriter = (function (this__4369__auto__,writer__4370__auto__,opt__4371__auto__){
+return cljs.core._write.call(null,writer__4370__auto__,"speclj.results/FailResult");
 }));
 
 /**
@@ -76,8 +76,8 @@ return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMP
 
 (speclj.results.PendingResult.cljs$lang$ctorStr = "speclj.results/PendingResult");
 
-(speclj.results.PendingResult.cljs$lang$ctorPrWriter = (function (this__5327__auto__,writer__5328__auto__,opt__5329__auto__){
-return cljs.core._write.call(null,writer__5328__auto__,"speclj.results/PendingResult");
+(speclj.results.PendingResult.cljs$lang$ctorPrWriter = (function (this__4369__auto__,writer__4370__auto__,opt__4371__auto__){
+return cljs.core._write.call(null,writer__4370__auto__,"speclj.results/PendingResult");
 }));
 
 /**
@@ -105,8 +105,8 @@ return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMP
 
 (speclj.results.ErrorResult.cljs$lang$ctorStr = "speclj.results/ErrorResult");
 
-(speclj.results.ErrorResult.cljs$lang$ctorPrWriter = (function (this__5327__auto__,writer__5328__auto__,opt__5329__auto__){
-return cljs.core._write.call(null,writer__5328__auto__,"speclj.results/ErrorResult");
+(speclj.results.ErrorResult.cljs$lang$ctorPrWriter = (function (this__4369__auto__,writer__4370__auto__,opt__4371__auto__){
+return cljs.core._write.call(null,writer__4370__auto__,"speclj.results/ErrorResult");
 }));
 
 /**
@@ -141,11 +141,11 @@ speclj.results.error_QMARK_ = (function speclj$results$error_QMARK_(result){
 return cljs.core._EQ_.call(null,cljs.core.type.call(null,result),speclj.results.ErrorResult);
 });
 speclj.results.fail_count = (function speclj$results$fail_count(results){
-return cljs.core.reduce.call(null,(function (p1__5548_SHARP_,p2__5547_SHARP_){
-if(((speclj.results.fail_QMARK_.call(null,p2__5547_SHARP_)) || (speclj.results.error_QMARK_.call(null,p2__5547_SHARP_)))){
-return (p1__5548_SHARP_ + (1));
+return cljs.core.reduce.call(null,(function (p1__4812_SHARP_,p2__4811_SHARP_){
+if(((speclj.results.fail_QMARK_.call(null,p2__4811_SHARP_)) || (speclj.results.error_QMARK_.call(null,p2__4811_SHARP_)))){
+return (p1__4812_SHARP_ + (1));
 } else {
-return p1__5548_SHARP_;
+return p1__4812_SHARP_;
 }
 }),(0),results);
 });

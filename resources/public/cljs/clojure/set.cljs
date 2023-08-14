@@ -96,11 +96,7 @@
    
 (defn map-invert
   "Returns the map with the vals mapped to the keys."
-  [m]
-  (persistent!
-    (reduce-kv (fn [m k v] (assoc! m v k))
-      (transient {})
-      m)))
+  [m] (reduce (fn [m [k v]] (assoc m v k)) {} m))
 
 (defn join
   "When passed 2 rels, returns the rel corresponding to the natural

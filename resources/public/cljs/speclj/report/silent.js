@@ -1,4 +1,4 @@
-// Compiled by ClojureScript 1.11.54 {:optimizations :none}
+// Compiled by ClojureScript 1.10.764 {}
 goog.provide('speclj.report.silent');
 goog.require('cljs.core');
 goog.require('speclj.reporting');
@@ -64,8 +64,8 @@ return new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMP
 
 (speclj.report.silent.SilentReporter.cljs$lang$ctorStr = "speclj.report.silent/SilentReporter");
 
-(speclj.report.silent.SilentReporter.cljs$lang$ctorPrWriter = (function (this__5327__auto__,writer__5328__auto__,opt__5329__auto__){
-return cljs.core._write.call(null,writer__5328__auto__,"speclj.report.silent/SilentReporter");
+(speclj.report.silent.SilentReporter.cljs$lang$ctorPrWriter = (function (this__4369__auto__,writer__4370__auto__,opt__4371__auto__){
+return cljs.core._write.call(null,writer__4370__auto__,"speclj.report.silent/SilentReporter");
 }));
 
 /**

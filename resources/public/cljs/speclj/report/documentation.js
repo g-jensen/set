@@ -1,4 +1,4 @@
-// Compiled by ClojureScript 1.11.54 {:optimizations :none}
+// Compiled by ClojureScript 1.10.764 {}
 goog.provide('speclj.report.documentation');
 goog.require('cljs.core');
 goog.require('speclj.config');
@@ -11,10 +11,10 @@ var component__$1 = cljs.core.deref.call(null,component.parent);
 var level = (0);
 while(true){
 if(cljs.core.truth_(component__$1)){
-var G__6427 = cljs.core.deref.call(null,component__$1.parent);
-var G__6428 = (level + (1));
-component__$1 = G__6427;
-level = G__6428;
+var G__6455 = cljs.core.deref.call(null,component__$1.parent);
+var G__6456 = (level + (1));
+component__$1 = G__6455;
+level = G__6456;
 continue;
 } else {
 return level;
@@ -103,8 +103,8 @@ return cljs.core.PersistentVector.EMPTY;
 
 (speclj.report.documentation.DocumentationReporter.cljs$lang$ctorStr = "speclj.report.documentation/DocumentationReporter");
 
-(speclj.report.documentation.DocumentationReporter.cljs$lang$ctorPrWriter = (function (this__5327__auto__,writer__5328__auto__,opt__5329__auto__){
-return cljs.core._write.call(null,writer__5328__auto__,"speclj.report.documentation/DocumentationReporter");
+(speclj.report.documentation.DocumentationReporter.cljs$lang$ctorPrWriter = (function (this__4369__auto__,writer__4370__auto__,opt__4371__auto__){
+return cljs.core._write.call(null,writer__4370__auto__,"speclj.report.documentation/DocumentationReporter");
 }));
 
 /**
