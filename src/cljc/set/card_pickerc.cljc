@@ -1,16 +1,8 @@
-(ns set.state
-  (:require [set.main :as main]))
-
-(defn initial-state [deck shuffle-fn]
-  (let [shuffled-deck (shuffle-fn deck)]
-    {:cards          (take 12 shuffled-deck)
-     :selected-cards []
-     :deck           (drop 12 shuffled-deck)
-     :src-deck       deck
-     :shuffle-fn     shuffle-fn}))
+(ns set.card-pickerc
+  (:require [set.utilc :as utilc]))
 
 (defn- select [state input]
-  (let [card (nth (:cards state) (dec input))
+  (let [card (nth (:cards state) input)
         selected (:selected-cards state)]
     (if (some #{card} selected)
       (remove #{card} selected)
@@ -23,7 +15,7 @@
   (let [{selected :selected-cards
          deck :deck
          cards :cards} state]
-    (if (main/set? selected)
+    (if (utilc/set? selected)
       (replace-with-map cards (zipmap selected (take 3 deck)))
       cards)))
 
@@ -32,7 +24,7 @@
         src-deck (:src-deck state)
         shuffle-fn (:shuffle-fn state)]
     (cond
-      (not (main/set? (:selected-cards state))) deck
+      (not (utilc/set? (:selected-cards state))) deck
       (<= (count deck) 3) (shuffle-fn src-deck)
       :else (drop 3 deck))))
 
@@ -42,7 +34,7 @@
       []
       selected)))
 
-(defn next-state [state input]
+(defn pick [state input]
   (as-> state state
         (assoc state :selected-cards (select state input))
         (assoc state :cards (update-cards state))

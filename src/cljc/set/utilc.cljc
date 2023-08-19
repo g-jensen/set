@@ -1,5 +1,7 @@
-(ns set.main
+(ns set.utilc
   (:require [clojure.math.combinatorics :as combo]))
+
+(def bad-shuffle #(conj (vec (rest %)) (first %)))
 
 (def attributes {:color [:red :green :purple]
                  :count [:one :two :three]
@@ -26,3 +28,12 @@
 
 (defn contains-set? [cards]
   (some true? (map set? (combo/combinations cards 3))))
+
+(defn initial-state [deck shuffle-fn]
+  (let [shuffled-deck (shuffle-fn deck)
+        playing-card-count 12]
+    {:cards          (take playing-card-count shuffled-deck)
+     :selected-cards []
+     :deck           (drop playing-card-count shuffled-deck)
+     :src-deck       deck
+     :shuffle-fn     shuffle-fn}))

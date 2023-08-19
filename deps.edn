@@ -1,19 +1,19 @@
 {
- :paths ["src/cljs" "src/cljc" "resources"]
+ :paths ["src/cljc" "src/cljs" "spec/cljs" "spec/cljc"]
  :deps {
         org.clojure/clojure      {:mvn/version "1.11.1"}
         org.clojure/clojurescript {:mvn/version "1.10.764"}
         cljsjs/react {:mvn/version "17.0.2-0"}
         cljsjs/react-dom {:mvn/version "17.0.2-0"}
         reagent/reagent {:mvn/version "1.1.0"}
-        com.cleancoders.c3kit/apron {:mvn/version "1.0.2"}
-        speclj/speclj {:mvn/version "3.3.2"}
+        com.cleancoders.c3kit/wire {:git/url "https://github.com/cleancoders/c3kit-wire.git" :git/sha "1f0b2781516728f406992b85b06c49487403b360"}
         org.clojure/math.combinatorics {:mvn/version "0.2.0"}
+        speclj/speclj {:mvn/version "3.4.3"}
         }
  :aliases {
-           :test {:extra-paths ["spec/cljs" "spec/cljc"]}
+           :cljs {:extra-paths ["resources"]}
+           :test {:main-opts ["-m" "runner.cljs" "auto" "development"]}
+           :build {:main-opts ["-m" "runner.cljs" "auto" "production"]}
            :spec {:main-opts ["-m" "speclj.main" "-c"]}
-           :cljs-spec {:main-opts ["-m" "runner.cljs" "auto" "development"]}
-           :cljs-build {:main-opts ["-m" "runner.cljs" "auto" "production"]}
            }
  }

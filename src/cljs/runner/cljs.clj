@@ -7,13 +7,15 @@
     [clojure.java.io :as io]))
 
 (def build-config (atom nil))
-(def run-cmd (atom "phantomjs resources/public/specs/speclj.js"))
+(def run-cmd (atom "node resources/public/specs/speclj.js"))
+(def run-env (atom {}))
 
 (defn run-specs [auto?]
-  (let [cmd     (str @run-cmd (when auto? " auto"))
-        process (.exec (Runtime/getRuntime) cmd)
-        output  (.getInputStream process)
-        error   (.getErrorStream process)]
+  (let [cmd (str @run-cmd (when auto? " auto"))
+        env (map (fn [[k v]] (str k "=" "'" v "'")) @run-env)
+        process (.exec (Runtime/getRuntime) cmd (into-array String env))
+        output (.getInputStream process)
+        error (.getErrorStream process)]
     (io/copy output (System/out))
     (io/copy error (System/err))
     (when (not auto?)
@@ -48,9 +50,10 @@
 (defn -main [& args]
   ;; usage:  lein run -m cleancoders.cljs [auto (default)|once] [env (development)]
   (let [once-or-auto (or (first args) "auto")
-        config       (util/read-edn-resource "config/cljs.edn")
-        build-key    (keyword (or (second args) (app/find-env (or (:env-keys config) app/env-keys))))]
+        config (util/read-edn-resource "config/cljs.edn")
+        build-key (keyword (or (second args) (apply app/find-env (or (:env-keys config) app/env-keys))))]
     (when-let [cmd (:run-cmd config)] (reset! run-cmd cmd))
+    (when-let [env (:run-env config)] (reset! run-env env))
     (reset! build-config (resolve-watch-fn (get config build-key)))
     (assert (#{"once" "auto"} once-or-auto) (str "Unrecognized build frequency: " once-or-auto ". Must be 'once' or 'auto'"))
     (println "Compiling ClojureScript:" once-or-auto build-key)
