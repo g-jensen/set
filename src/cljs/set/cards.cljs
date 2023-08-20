@@ -18,7 +18,7 @@
        (name (:shade card)) ".png"))
 
 (defn card->button [idx card]
-  [:input {:id       (str "-card-" idx)
+  [:input.card {:id       (str "-card-" idx)
            :type     "image"
            :src      (card->path card)
            :on-click #(on-click-card! idx)

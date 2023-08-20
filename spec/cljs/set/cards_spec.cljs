@@ -36,7 +36,7 @@
   (context "card -> button"
       (it "for a basic card"
         (let [[but-outerhtml but-attribs] (sut/card->button 0 card-0)]
-          (should= :input but-outerhtml)
+          (should= :input.card but-outerhtml)
           (should= "-card-0"         (:id       but-attribs))
           (should= "image"                (:type     but-attribs))
           (should= (sut/card->path card-0) (:src      but-attribs))
