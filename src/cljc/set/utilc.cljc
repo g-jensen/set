@@ -36,4 +36,5 @@
      :selected-cards []
      :deck           (drop playing-card-count shuffled-deck)
      :src-deck       deck
-     :shuffle-fn     shuffle-fn}))
+     :shuffle-fn     shuffle-fn
+     :found-sets-count 0}))

@@ -90,9 +90,11 @@
                 :selected-cards []
                 :deck (drop 12 d1)
                 :src-deck d1
-                :shuffle-fn identity} (sut/initial-state d1 identity))
+                :shuffle-fn identity
+                :found-sets-count 0} (sut/initial-state d1 identity))
       (should= {:cards (take 12 shuffled-d2)
                 :selected-cards []
                 :deck (drop 12 shuffled-d2)
                 :src-deck d2
-                :shuffle-fn sut/bad-shuffle} (sut/initial-state d2 sut/bad-shuffle)))))
+                :shuffle-fn sut/bad-shuffle
+                :found-sets-count 0} (sut/initial-state d2 sut/bad-shuffle)))))

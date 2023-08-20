@@ -49,6 +49,17 @@
               :deck [:a :b :c :d]}]
       (should= [:d] (:deck (sut/pick s1 2)))))
 
+  (it "increases found-sets-count if selected is set"
+    (let [deck util/deck
+          set (take 3 deck)
+          s1 {:cards set
+              :selected-cards (take 2 set)
+              :deck [:a :b :c :d]
+              :found-sets-count 0}
+          s2 (assoc s1 :found-sets-count 1)]
+      (should= 1 (:found-sets-count (sut/pick s1 2)))
+      (should= 2 (:found-sets-count (sut/pick s2 2)))))
+
   (it "restocks an empty deck"
     (let [deck util/deck
           set (take 3 deck)
