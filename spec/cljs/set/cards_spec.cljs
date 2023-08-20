@@ -65,6 +65,7 @@
         ;(wire/flush)
         ;(wire/click! "#-card-0")
         ))
+
   (it "creates buttons element"
     (let [[outerhtml innerhtml] (sut/buttons)]
       (should= :div.card-container outerhtml)

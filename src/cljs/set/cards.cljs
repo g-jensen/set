@@ -16,8 +16,7 @@
        (name (:shape card)) "-"
        (name (:shade card)) ".png"))
 
-(defn- selected? [card]
-  (some #{card} (:selected-cards @state)))
+(def selected? #(picker/selected? @state %))
 
 (defn card->button [idx card]
   [:input.card {:class    (when (selected? card) "card-selected")
