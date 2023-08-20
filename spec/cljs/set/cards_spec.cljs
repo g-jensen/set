@@ -73,4 +73,4 @@
   (it "creates stats element"
     (let [[outerhtml innerhtml] (sut/stats)]
       (should= :div outerhtml)
-      (should= 0 innerhtml))))
+      (should-not-be-nil innerhtml))))

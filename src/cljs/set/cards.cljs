@@ -32,4 +32,5 @@
 
 (defn stats []
   [:div
-   (:found-sets-count @state)])
+   (str "found: " (:found-sets-count @state) " "
+        "exist: " (utilc/set-count (:cards @state)))])
