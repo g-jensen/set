@@ -37,11 +37,11 @@
       (it "for a basic card"
         (let [[but-outerhtml but-attribs] (sut/card->button 0 card-0)]
           (should= :input.card but-outerhtml)
-          (should= "-card-0"         (:id       but-attribs))
-          (should= "image"                (:type     but-attribs))
+          (should-be-nil                   (:class    but-attribs))
+          (should= "-card-0"               (:id       but-attribs))
+          (should= "image"                 (:type     but-attribs))
           (should= (sut/card->path card-0) (:src      but-attribs))
-          (should-not-be-nil              (:on-click but-attribs))
-          (should-be-nil                  (:border   but-attribs))))
+          (should-not-be-nil               (:on-click but-attribs))))
 
       (it "for a different card"
         (let [[_ but-attribs] (sut/card->button 1 card-1)]
@@ -54,7 +54,7 @@
       (it "for a selected card"
         (sut/on-click-card! 1)
         (let [[_ but-attribs] (sut/card->button 1 card-1)]
-          (should= "2px" (:border but-attribs))))
+          (should= "card-selected" (:class but-attribs))))
 
       ;; TODO - figure out how to test this
       #_(it "on-click"

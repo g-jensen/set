@@ -17,13 +17,15 @@
        (name (:shape card)) "-"
        (name (:shade card)) ".png"))
 
+(defn- selected? [card]
+  (some #{card} (:selected-cards @state)))
+
 (defn card->button [idx card]
-  [:input.card {:id       (str "-card-" idx)
-           :type     "image"
-           :src      (card->path card)
-           :on-click #(on-click-card! idx)
-           :border   (when (some #{card} (:selected-cards @state))
-                       "2px")}])
+  [:input.card {:class    (when (selected? card) "card-selected")
+                :id       (str "-card-" idx)
+                :type     "image"
+                :src      (card->path card)
+                :on-click #(on-click-card! idx)}])
 
 (defn buttons []
   [:div.card-container

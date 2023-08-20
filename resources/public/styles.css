@@ -6,8 +6,19 @@
 .card {
   transition: transform .2s;
   margin: 1vw;
+  border-style: solid;
+  border-width: 2px;
+  border-color: white;
 }
 
 .card:hover {
   transform: scale(1.1);
+}
+
+.card-selected {
+  border-color: black;
+}
+
+.card-selected:hover {
+  transform: none;
 }
