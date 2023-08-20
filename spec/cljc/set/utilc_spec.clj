@@ -2,7 +2,7 @@
   (:require [speclj.core :refer :all]
             [set.utilc :as sut]))
 
-(describe "The game of Set"
+(describe "Set Utilities"
   (context "determines if a list of cards is a set"
 
     (it "for less than 3 cards"
