@@ -4,7 +4,6 @@
             [set.utilc :as utilc]))
 
 (def initial-state (utilc/initial-state utilc/deck shuffle))
-
 (def state (reagent/atom initial-state))
 
 (defn on-click-card! [idx]
@@ -30,3 +29,7 @@
 (defn buttons []
   [:div.card-container
    (map-indexed card->button (:cards @state))])
+
+(defn stats []
+  [:div
+   (:found-sets-count @state)])

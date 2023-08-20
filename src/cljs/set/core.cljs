@@ -3,7 +3,12 @@
             [reagent.dom :as rd]
             [set.cards :as cards]))
 
+(defn component []
+  [:div
+   [cards/buttons]
+   [cards/stats]])
+
 (defn ^:export main []
-  (rd/render [cards/buttons] (.getElementById js/document "app")))
+  (rd/render [component] (.getElementById js/document "app")))
 
 (main)

@@ -65,7 +65,12 @@
         ;(wire/flush)
         ;(wire/click! "#-card-0")
         ))
-  (it "creates buttons"
+  (it "creates buttons element"
     (let [[outerhtml innerhtml] (sut/buttons)]
       (should= :div.card-container outerhtml)
-      (should= 12 (count innerhtml)))))
+      (should= 12 (count innerhtml))))
+
+  (it "creates stats element"
+    (let [[outerhtml innerhtml] (sut/stats)]
+      (should= :div outerhtml)
+      (should= 0 innerhtml))))
