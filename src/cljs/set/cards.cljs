@@ -25,11 +25,6 @@
            :border   (when (some #{card} (:selected-cards @state))
                        "2px")}])
 
-(defn- vec-insert [vec element idx]
-  (concat (subvec vec 0 idx) [element] (subvec vec idx)))
-
 (defn buttons []
-  [:div
-   (-> (map-indexed card->button (:cards @state)) (vec)
-       (vec-insert [:br] 4) (vec)
-       (vec-insert [:br] 9))])
+  [:div.card-container
+   (map-indexed card->button (:cards @state))])

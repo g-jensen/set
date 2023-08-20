@@ -66,4 +66,6 @@
         ;(wire/click! "#-card-0")
         ))
   (it "creates buttons"
-    (should= nil (sut/buttons))))
+    (let [[outerhtml innerhtml] (sut/buttons)]
+      (should= :div.card-container outerhtml)
+      (should= 12 (count innerhtml)))))
