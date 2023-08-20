@@ -1,0 +1,7 @@
+{
+ :source-dir  "src/css"
+ :var          css/styles
+ :output-file "resources/public/styles.css"
+ :flags       {:pretty-print? true
+               :vendors       ["webkit" "moz" "o"]}
+ }

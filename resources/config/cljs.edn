@@ -11,7 +11,7 @@
                :sources        ["spec" "src"]
                :specs          true
                :verbose        false
-               :watch-fn       runner.cljs/on-dev-compiled
+               :watch-fn       c3kit.scaffold.cljs/on-dev-compiled
                }
  :production  {
                :cache-analysis false
