@@ -26,8 +26,14 @@
 (defn set? [cards]
   (and (= (count cards) 3) (values-are-distinct-or-all-same? cards)))
 
+(defn- combos->set? [cards]
+  (map set? (combo/combinations cards 3)))
+
+(defn set-count [cards]
+  (count (filter true? (combos->set? cards))))
+
 (defn contains-set? [cards]
-  (some true? (map set? (combo/combinations cards 3))))
+  (some true? (combos->set? cards)))
 
 (defn initial-state [deck shuffle-fn]
   (let [shuffled-deck (shuffle-fn deck)

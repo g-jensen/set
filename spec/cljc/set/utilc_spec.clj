@@ -58,6 +58,31 @@
                 (sut/card :green :three :squiggle :open)]]
         (should-not (sut/set? c1)))))
 
+  (context "calculates the number of sets in a list of cards"
+    (it "for an empty list"
+      (should= 0 (sut/set-count [])))
+
+    (it "for a list of length 3"
+      (let [c1 [(sut/card :red :one :diamond :open)
+                (sut/card :red :two :oval :solid)
+                (sut/card :red :three :squiggle :striped)]]
+        (should= 1 (sut/set-count c1))))
+
+    (it "for a list of length 4"
+      (let [c1 [(sut/card :red :one :diamond :open)
+                (sut/card :red :two :oval :solid)
+                (sut/card :red :three :squiggle :striped)
+                (sut/card :green :three :squiggle :striped)]]
+        (should= 1 (sut/set-count c1))))
+
+    (it "for a list of length 5"
+      (let [c1 [(sut/card :red :one :diamond :open)
+                (sut/card :red :two :oval :solid)
+                (sut/card :red :three :squiggle :striped)
+                (sut/card :green :three :squiggle :striped)
+                (sut/card :purple :three :squiggle :striped)]]
+        (should= 2 (sut/set-count c1)))))
+
   (context "determines if a list of cards has a set"
     (it "for an empty list"
       (should-not (sut/contains-set? [])))
