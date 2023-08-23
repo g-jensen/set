@@ -20,6 +20,7 @@
   (map #(get m % %) coll))
 
 (defn- reshuffle-cards-with-deck [{:keys [cards deck shuffle-fn src-deck] :as state}]
+  ;; BUG - sometimes this creates duplicate elements
   (let [cards-and-deck (concat cards deck)
         shuffled (utilc/shuffle-until-set cards-and-deck shuffle-fn)]
     (if shuffled
