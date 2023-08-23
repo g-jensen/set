@@ -61,7 +61,7 @@
         ;(wire/with-root-dom)
         ;(wire/flush)
         ;(reagent.dom/render [#(sut/card->button 0 card-0)] (.getElementById js/document "app"))
-        ;(wire/render [(sut/card->button 0 card-0)])
+        ;(wire/render [sut/card->button 0 card-0])
         ;(wire/flush)
         ;(wire/click! "#-card-0")
         ))

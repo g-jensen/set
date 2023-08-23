@@ -19,16 +19,29 @@
 (defn- replace-with-map [coll m]
   (map #(get m % %) coll))
 
+(defn- reshuffle-cards-with-deck [{:keys [cards deck shuffle-fn src-deck] :as state}]
+  (let [cards-and-deck (concat cards deck)
+        shuffled (utilc/shuffle-until-set cards-and-deck shuffle-fn)]
+    (if shuffled
+      (as-> state state
+            (assoc state :cards (take utilc/playing-card-count shuffled))
+            (assoc state :deck (drop utilc/playing-card-count shuffled)))
+      (utilc/reset-cards-and-deck state src-deck shuffle-fn))))
+
+(defn- ensure-set-exists [{:keys [cards] :as state}]
+  (if (utilc/contains-set? cards)
+    state
+    (reshuffle-cards-with-deck state)))
+
 (defn- maybe-replace-cards [{:keys [selected-cards deck cards] :as state}]
   (->> (if (utilc/set? selected-cards)
          (replace-with-map cards (zipmap selected-cards (take 3 deck)))
          cards)
        (assoc state :cards)))
 
-(defn- update-deck [{:keys [deck src-deck shuffle-fn selected-cards] :as state}]
+(defn- update-deck [{:keys [deck src-deck shuffle-fn] :as state}]
   (->> (cond
-        (not (utilc/set? selected-cards)) deck
-        (<= (count deck) 3) (shuffle-fn src-deck)
+        (< (count deck) 3) (shuffle-fn src-deck)
         :else (drop 3 deck))
        (assoc state :deck)))
 
@@ -52,4 +65,5 @@
       (maybe-replace-cards)
       (update-deck)
       (update-found-sets-count)
-      (maybe-reset-selected)))
+      (maybe-reset-selected)
+      (ensure-set-exists)))

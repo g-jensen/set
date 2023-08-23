@@ -1,21 +1,23 @@
 (ns set.card-pickerc-spec
-  (:require [speclj.core :refer :all]
+  (:require [set.utilc :as utilc]
+            [speclj.core :refer :all]
             [set.card-pickerc :as sut]
-            [set.utilc :as util]))
+            [set.utilc :as util]
+            [set.utilc-spec :as util-spec]))
 
 (describe "Card Picker"
   (it "selects a new card"
     (let [deck [:a :b :c :d]
           s1 (util/initial-state deck identity)
-          s2 {:cards deck :selected-cards [:a]}]
+          s2 {:cards deck :selected-cards [:a] :shuffle-fn identity}]
       (should= [:a] (:selected-cards (sut/pick s1 0)))
       (should= [:b] (:selected-cards (sut/pick s1 1)))
       (should= [:a :b] (:selected-cards (sut/pick s2 1)))))
 
   (it "deselects a selected card"
     (let [deck [:a :b :c :d]
-          s1 {:cards deck :selected-cards [:a]}
-          s2 {:cards deck :selected-cards [:a :b]}]
+          s1 {:cards deck :selected-cards [:a] :shuffle-fn identity}
+          s2 {:cards deck :selected-cards [:a :b] :shuffle-fn identity}]
       (should= [] (:selected-cards (sut/pick s1 0)))
       (should= [:b] (:selected-cards (sut/pick s2 0)))
       (should= [:a] (:selected-cards (sut/pick s2 1)))))
@@ -41,10 +43,39 @@
       (should= [:hello :a :b :c :bye]
                (:cards (sut/pick s2 1)))))
 
+  (context "ensures that there is always at least one set in cards"
+    (it "with deck left"
+      (let [set (take 3 util/deck)
+            no-set util-spec/cards-with-no-set
+            cards (concat set (drop 3 no-set))
+            s1 {:cards          cards
+                :selected-cards (rest set)
+                :deck           (concat (take 3 no-set) set)
+                :shuffle-fn     utilc/bad-shuffle}
+            s1-pick (sut/pick s1 0)
+            shuffled (utilc/shuffle-until-set (concat no-set set) utilc/bad-shuffle)]
+        (should (utilc/contains-set? (:cards s1-pick)))
+        (should= (take 12 shuffled) (:cards s1-pick))
+        (should= (drop 12 shuffled) (:deck s1-pick))))
+
+    (it "without deck left"
+        (let [set (take 3 util/deck)
+              no-set util-spec/cards-with-no-set
+              cards (concat set (drop 3 no-set))
+              s1 {:cards          cards
+                  :selected-cards (rest set)
+                  :deck           (take 3 no-set)
+                  :shuffle-fn     utilc/bad-shuffle
+                  :src-deck utilc/deck}
+              s1-pick (sut/pick s1 0)
+              shuffled (utilc/bad-shuffle utilc/deck)]
+          (should= (take 12 shuffled) (:cards s1-pick))
+          (should= (drop 12 shuffled) (:deck s1-pick)))))
+
   (it "removes 3 cards from deck if selected is set"
     (let [deck util/deck
           set (take 3 deck)
-          s1 {:cards set
+          s1 {:cards          set
               :selected-cards (take 2 set)
               :deck [:a :b :c :d]}]
       (should= [:d] (:deck (sut/pick s1 2)))))
@@ -65,7 +96,7 @@
           set (take 3 deck)
           s1 {:cards set
               :selected-cards (take 2 set)
-              :deck [:a :b :c]
+              :deck []
               :src-deck [:a :b :c :d :e :f]
               :shuffle-fn identity}
           s2 (assoc s1 :shuffle-fn util/bad-shuffle)]
