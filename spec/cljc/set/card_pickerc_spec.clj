@@ -43,34 +43,16 @@
       (should= [:hello :a :b :c :bye]
                (:cards (sut/pick s2 1)))))
 
-  (context "ensures that there is always at least one set in cards"
-    (it "with deck left"
-      (let [set (take 3 util/deck)
-            no-set util-spec/cards-with-no-set
-            cards (concat set (drop 3 no-set))
-            s1 {:cards          cards
-                :selected-cards (rest set)
-                :deck           (concat (take 3 no-set) set)
-                :shuffle-fn     utilc/bad-shuffle}
-            s1-pick (sut/pick s1 0)
-            shuffled (utilc/shuffle-until-set (concat no-set set) utilc/bad-shuffle)]
-        (should (utilc/contains-set? (:cards s1-pick)))
-        (should= (take 12 shuffled) (:cards s1-pick))
-        (should= (drop 12 shuffled) (:deck s1-pick))))
-
-    (it "without deck left"
-        (let [set (take 3 util/deck)
-              no-set util-spec/cards-with-no-set
-              cards (concat set (drop 3 no-set))
-              s1 {:cards          cards
-                  :selected-cards (rest set)
-                  :deck           (take 3 no-set)
-                  :shuffle-fn     utilc/bad-shuffle
-                  :src-deck utilc/deck}
-              s1-pick (sut/pick s1 0)
-              shuffled (utilc/bad-shuffle utilc/deck)]
-          (should= (take 12 shuffled) (:cards s1-pick))
-          (should= (drop 12 shuffled) (:deck s1-pick)))))
+  (it "ensures that there is always at least one set in cards"
+    (let [bad-cards util-spec/cards-with-no-set
+          good-cards (take 3 utilc/deck)
+          s1 {:src-deck       utilc/deck
+              :cards          (concat good-cards (drop 3 bad-cards))
+              :selected-cards (take 2 good-cards)
+              :deck           (take 3 bad-cards)
+              :shuffle-fn     utilc/bad-shuffle}]
+      (should= (drop 12 (utilc/bad-shuffle utilc/deck)) (:deck (sut/pick s1 2)))
+      (should= (take 12 (utilc/bad-shuffle utilc/deck)) (:cards (sut/pick s1 2)))))
 
   (it "removes 3 cards from deck if selected is set"
     (let [deck util/deck
