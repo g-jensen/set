@@ -25,23 +25,19 @@
     (utilc/reset-cards-and-deck state src-deck shuffle-fn)))
 
 (defn- maybe-replace-cards [{:keys [selected-cards deck cards] :as state}]
-  (->> (if (utilc/set? selected-cards)
-         (replace-with-map cards (zipmap selected-cards (take 3 deck)))
-         cards)
-       (assoc state :cards)))
+  (if (utilc/set? selected-cards)
+    (assoc state :cards (replace-with-map cards (zipmap selected-cards (take 3 deck))))
+    state))
 
-(defn- update-deck [{:keys [deck src-deck shuffle-fn] :as state}]
-  (->> (cond
-        (< (count deck) 3) (utilc/shuffle-until-set src-deck shuffle-fn)
-        :else (drop 3 deck))
-       (assoc state :deck)))
+(defn- maybe-take-from-deck [{:keys [selected-cards deck] :as state}]
+  (if (utilc/set? selected-cards)
+    (assoc state :deck (drop 3 deck))
+    state))
 
 (defn- maybe-reset-selected [{:keys [selected-cards] :as state}]
-  (let [selected selected-cards]
-    (->> (if (= 3 (count selected))
-           []
-           selected)
-         (assoc state :selected-cards))))
+  (if (= 3 (count selected-cards))
+    (assoc state :selected-cards [])
+    state))
 
 (defn- update-found-sets-count [{:keys [selected-cards found-sets-count] :as state}]
   (let [found-sets-count (or found-sets-count 0)]
@@ -50,11 +46,16 @@
            found-sets-count)
          (assoc state :found-sets-count))))
 
+(defn- handle-invalid-state [{:keys [cards deck src-deck shuffle-fn] :as state}]
+  (if-not (and (utilc/contains-set? cards) (> (count deck) 3))
+    (utilc/reset-cards-and-deck state src-deck shuffle-fn)
+    state))
+
 (defn pick [state input]
   (-> state
       (set-selected input)
-      (maybe-replace-cards)
-      (update-deck)
       (update-found-sets-count)
+      (maybe-replace-cards)
+      (maybe-take-from-deck)
       (maybe-reset-selected)
-      (ensure-set-exists)))
+      (handle-invalid-state)))

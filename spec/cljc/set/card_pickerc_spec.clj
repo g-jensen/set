@@ -25,22 +25,22 @@
   (it "deselects cards if 3 are selected"
     (let [s1 {:cards [:a :b :c :d]
               :selected-cards [:a :b]
-              :shuffle-fn (constantly nil)}]
+              :shuffle-fn identity}]
       (should= [] (:selected-cards (sut/pick s1 2)))))
 
   (it "replaces selected cards if selected is set"
     (let [deck util/deck
-          set (take 3 deck)
+          set (take 3 (drop 3 deck))
           s1 {:cards set
               :selected-cards (take 2 set)
-              :deck [:a :b :c]
-              :shuffle-fn (constantly nil)}
+              :deck deck
+              :shuffle-fn identity}
           s2 {:cards (apply concat [[:hello] set [:bye]])
               :selected-cards (rest set)
-              :deck [:a :b :c :d]
-              :shuffle-fn (constantly nil)}]
-      (should= [:b :c :a] (:cards (sut/pick s1 2)))
-      (should= [:hello :a :b :c :bye]
+              :deck deck
+              :shuffle-fn identity}]
+      (should= (utilc/bad-shuffle (take 3 deck)) (:cards (sut/pick s1 2)))
+      (should= (apply concat [[:hello] (take 3 deck) [:bye]])
                (:cards (sut/pick s2 1)))))
 
   (it "ensures that there is always at least one set in cards"
@@ -59,8 +59,8 @@
           set (take 3 deck)
           s1 {:cards          set
               :selected-cards (take 2 set)
-              :deck [:a :b :c :d]}]
-      (should= [:d] (:deck (sut/pick s1 2)))))
+              :deck           deck}]
+      (should= (drop 3 deck) (:deck (sut/pick s1 2)))))
 
   (it "increases found-sets-count if selected is set"
     (let [deck util/deck
@@ -74,13 +74,12 @@
       (should= 2 (:found-sets-count (sut/pick s2 2)))))
 
   (it "restocks an empty deck"
-    (let [deck util/deck
-          set (take 3 deck)
+    (let [set (take 3 util/deck)
           s1 {:cards set
               :selected-cards (take 2 set)
-              :deck []
-              :src-deck [:a :b :c :d :e :f]
+              :src-deck util/deck
+              :deck [:g :h :i]
               :shuffle-fn identity}
           s2 (assoc s1 :shuffle-fn util/bad-shuffle)]
-      (should= [:a :b :c :d :e :f] (:deck (sut/pick s1 2)))
-      (should= [:b :c :d :e :f :a] (:deck (sut/pick s2 2))))))
+      (should= (drop 12 util/deck) (:deck (sut/pick s1 2)))
+      (should= (drop 12 (util/bad-shuffle util/deck)) (:deck (sut/pick s2 2))))))

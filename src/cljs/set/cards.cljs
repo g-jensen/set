@@ -33,3 +33,7 @@
   [:div
    (str "found: " (:found-sets-count @state) " "
         "exist: " (utilc/set-count (:cards @state)))])
+
+(defn deck []
+  [:div
+   (str (count (:deck @state)) " deck: " (:deck @state))])
