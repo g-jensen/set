@@ -6,8 +6,7 @@
 (defn component []
   [:div
    [cards/buttons]
-   [cards/stats]
-   [cards/deck]])
+   [cards/stats]])
 
 (defn ^:export main []
   (rd/render [component] (.getElementById js/document "app")))

@@ -58,11 +58,8 @@
 
       ;; TODO - figure out how to test this
       #_(it "on-click"
-        ;(wire/with-root-dom)
-        ;(wire/flush)
-        ;(reagent.dom/render [#(sut/card->button 0 card-0)] (.getElementById js/document "app"))
-        ;(wire/render [sut/card->button 0 card-0])
-        ;(wire/flush)
+        (wire/with-root-dom)
+        (wire/render [sut/card->button 0 card-0])
         ;(wire/click! "#-card-0")
         ))
 
