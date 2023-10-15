@@ -3,6 +3,11 @@
 
 (garden/defstyles styles
   [
+   [:.center {
+    :display "flex"
+    :justify-content "center"
+   }]
+
     [:.card-container {
      :display "grid"
      :grid-template-columns "min-content min-content min-content min-content";

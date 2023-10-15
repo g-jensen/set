@@ -4,7 +4,7 @@
             [set.cards :as cards]))
 
 (defn component []
-  [:div
+  [:div.center
    [cards/buttons]
    [cards/stats]])
 
