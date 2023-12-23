@@ -4,14 +4,14 @@
             [set.utilc :as utilc]
             [set.card-pickerc :as pickerc]
             [set.cards :as sut]
-            [c3kit.wire.spec-helper :as wire]
-            [c3kit.wire.js :as wjs]))
+            [c3kit.wire.spec-helper :as wire]))
 
 (def cards (:cards sut/initial-state))
 (def card-0 (first cards))
 (def card-1 (second cards))
 
 (describe "Cards"
+  (wire/with-root-dom)
   (before (reset! sut/state sut/initial-state))
 
   (it "on card click"
@@ -56,12 +56,10 @@
         (let [[_ but-attribs] (sut/card->button 1 card-1)]
           (should= "card-selected" (:class but-attribs))))
 
-      ;; TODO - figure out how to test this
-      #_(it "on-click"
-        (wire/with-root-dom)
-        (wire/render [sut/card->button 0 card-0])
-        ;(wire/click! "#-card-0")
-        ))
+      (it "on-click"
+        (wire/render (sut/card->button 0 card-0))
+        (wire/click! "#-card-0")
+        (should= (pickerc/pick sut/initial-state 0) @sut/state)))
 
   (it "creates buttons element"
     (let [[outerhtml innerhtml] (sut/buttons)]
