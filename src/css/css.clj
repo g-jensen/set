@@ -19,7 +19,7 @@
    }]
 
    [:.color-blind-indicator {
-    :position "absolute"
+    :text-align "center"
    }]
 
     [:.card-container {
