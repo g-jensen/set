@@ -3,6 +3,16 @@
 
 (garden/defstyles styles
   [
+   [:.main-container {
+    :display "grid"
+    :grid-template-columns "1fr 1fr 1fr"
+   }]
+
+   [:.left-container {
+    :float "right"
+    :text-align "right"
+   }]
+
    [:.center {
     :display "flex"
     :justify-content "center"
