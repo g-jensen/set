@@ -18,12 +18,17 @@
     :justify-content "center"
    }]
 
+   [:.color-blind-indicator {
+    :position "absolute"
+   }]
+
     [:.card-container {
      :display "grid"
      :grid-template-columns "min-content min-content min-content min-content";
     }]
 
    [:.card {
+    :position "relative"
     :transition "transform .2s"
     :margin "1vw"
     :border-style "solid"

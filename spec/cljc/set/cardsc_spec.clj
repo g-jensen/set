@@ -1,6 +1,6 @@
-(ns set.utilc-spec
+(ns set.cardsc-spec
   (:require [speclj.core :refer :all]
-            [set.utilc :as sut]))
+            [set.cardsc :as sut]))
 
 (def cards-with-no-set [(sut/card :purple :two :diamond :solid)
                         (sut/card :red :one :diamond :open)
@@ -156,4 +156,21 @@
                   :deck (drop 12 shuffled-d1)
                   :src-deck d1
                   :shuffle-fn sut/bad-shuffle
-                  :found-sets-count 0} (sut/initial-state d1 sut/bad-shuffle))))))
+                  :found-sets-count 0} (sut/initial-state d1 sut/bad-shuffle)))))
+
+  (it "card->file path"
+    (should= "cards/green-one-diamond-open.png"
+             (sut/card->path (sut/card :green :one :diamond :open)))
+    (should= "cards/red-one-diamond-open.png"
+             (sut/card->path (sut/card :red :one :diamond :open)))
+    (should= "cards/red-two-diamond-open.png"
+             (sut/card->path (sut/card :red :two :diamond :open)))
+    (should= "cards/red-two-squiggle-open.png"
+             (sut/card->path (sut/card :red :two :squiggle :open)))
+    (should= "cards/red-two-squiggle-solid.png"
+             (sut/card->path (sut/card :red :two :squiggle :solid))))
+
+  (it "gets the label of the color of a card"
+    (should= "R" (sut/color-label {:color :red}))
+    (should= "G" (sut/color-label {:color :green}))
+    (should= "P" (sut/color-label {:color :purple}))))

@@ -1,9 +1,9 @@
 (ns set.card-pickerc-spec
-  (:require [set.utilc :as utilc]
+  (:require [set.cardsc :as cardsc]
             [speclj.core :refer :all]
             [set.card-pickerc :as sut]
-            [set.utilc :as util]
-            [set.utilc-spec :as util-spec]))
+            [set.cardsc :as util]
+            [set.cardsc-spec :as util-spec]))
 
 (describe "Card Picker"
   (it "selects a new card"
@@ -39,20 +39,20 @@
               :selected-cards (rest set)
               :deck deck
               :shuffle-fn identity}]
-      (should= (utilc/bad-shuffle (take 3 deck)) (:cards (sut/pick s1 2)))
+      (should= (cardsc/bad-shuffle (take 3 deck)) (:cards (sut/pick s1 2)))
       (should= (apply concat [[:hello] (take 3 deck) [:bye]])
                (:cards (sut/pick s2 1)))))
 
   (it "ensures that there is always at least one set in cards"
     (let [bad-cards util-spec/cards-with-no-set
-          good-cards (take 3 utilc/deck)
-          s1 {:src-deck       utilc/deck
+          good-cards (take 3 cardsc/deck)
+          s1 {:src-deck       cardsc/deck
               :cards          (concat good-cards (drop 3 bad-cards))
               :selected-cards (take 2 good-cards)
               :deck           (take 3 bad-cards)
-              :shuffle-fn     utilc/bad-shuffle}]
-      (should= (drop 12 (utilc/bad-shuffle utilc/deck)) (:deck (sut/pick s1 2)))
-      (should= (take 12 (utilc/bad-shuffle utilc/deck)) (:cards (sut/pick s1 2)))))
+              :shuffle-fn     cardsc/bad-shuffle}]
+      (should= (drop 12 (cardsc/bad-shuffle cardsc/deck)) (:deck (sut/pick s1 2)))
+      (should= (take 12 (cardsc/bad-shuffle cardsc/deck)) (:cards (sut/pick s1 2)))))
 
   (it "removes 3 cards from deck if selected is set"
     (let [deck util/deck

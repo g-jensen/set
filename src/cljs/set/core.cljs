@@ -2,17 +2,18 @@
   (:require [goog.dom :as gdom]
             [reagent.dom :as rd]
             [set.cards :as cards]
-            [set.color-blind :as cb]))
+            [set.stats :as stats]
+            [set.color-blind :as colorblind]
+            [set.settings :as settings]))
 
 (defn component []
   [:div.main-container
    [:div.left-container
-    [cards/stats]]
+    [stats/stats]]
    [:div.center
-    [cards/buttons]]
+    [cards/buttons settings/state]]
    [:div
-    ;TODO - set up settings buttons with multimethods so can just call one fn
-    [cb/button]]])
+    [colorblind/button]]])
 
 (defn ^:export main []
   (rd/render [component] (.getElementById js/document "app")))

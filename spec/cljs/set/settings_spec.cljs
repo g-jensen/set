@@ -6,4 +6,4 @@
 (describe "SETtings"
 
   (it "has an initial state"
-    (should= {:color-blind-mode false} @sut/state)))
+    (should= {:color-blind-mode? false} @sut/state)))

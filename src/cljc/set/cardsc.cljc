@@ -1,5 +1,6 @@
-(ns set.utilc
-  (:require [clojure.math.combinatorics :as combo]))
+(ns set.cardsc
+  (:require [clojure.math.combinatorics :as combo]
+            [clojure.string :as str]))
 
 (def playing-card-count 12)
 (def bad-shuffle #(conj (vec (rest %)) (first %)))
@@ -58,3 +59,13 @@
        :shuffle-fn       shuffle-fn
        :found-sets-count 0}
       (reset-cards-and-deck deck shuffle-fn)))
+
+(defn card->path [card]
+  (str "cards/"
+       (name (:color card)) "-"
+       (name (:count card)) "-"
+       (name (:shape card)) "-"
+       (name (:shade card)) ".png"))
+
+(defn color-label [card]
+  (str/capitalize (second (str (:color card)))))
