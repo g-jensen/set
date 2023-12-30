@@ -61,7 +61,7 @@
       (reset-cards-and-deck deck shuffle-fn)))
 
 (defn card->path [card]
-  (str "cards/"
+  (str "/cards/"
        (name (:color card)) "-"
        (name (:count card)) "-"
        (name (:shape card)) "-"

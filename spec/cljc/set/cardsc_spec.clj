@@ -159,15 +159,15 @@
                   :found-sets-count 0} (sut/initial-state d1 sut/bad-shuffle)))))
 
   (it "card->file path"
-    (should= "cards/green-one-diamond-open.png"
+    (should= "/cards/green-one-diamond-open.png"
              (sut/card->path (sut/card :green :one :diamond :open)))
-    (should= "cards/red-one-diamond-open.png"
+    (should= "/cards/red-one-diamond-open.png"
              (sut/card->path (sut/card :red :one :diamond :open)))
-    (should= "cards/red-two-diamond-open.png"
+    (should= "/cards/red-two-diamond-open.png"
              (sut/card->path (sut/card :red :two :diamond :open)))
-    (should= "cards/red-two-squiggle-open.png"
+    (should= "/cards/red-two-squiggle-open.png"
              (sut/card->path (sut/card :red :two :squiggle :open)))
-    (should= "cards/red-two-squiggle-solid.png"
+    (should= "/cards/red-two-squiggle-solid.png"
              (sut/card->path (sut/card :red :two :squiggle :solid))))
 
   (it "gets the label of the color of a card"
