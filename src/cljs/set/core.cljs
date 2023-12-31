@@ -1,5 +1,6 @@
 (ns set.core
-  (:require [goog.dom :as gdom]
+  (:require [c3kit.apron.utilc :as utilc]
+            [goog.dom :as gdom]
             [reagent.dom :as rd]
             [set.cards :as cards]
             [set.stats :as stats]
@@ -15,7 +16,8 @@
    [:div
     [colorblind/button]]])
 
-(defn ^:export main []
+(defn ^:export main [data]
+  (prn (utilc/<-transit data))
   (rd/render [component] (.getElementById js/document "app")))
 
-(main)
+;(main)

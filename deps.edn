@@ -1,15 +1,16 @@
 {
  :paths ["src/clj" "src/cljc" "src/cljs" "spec/cljs" "spec/cljc" "spec/clj" "src/css"]
  :deps {
-        org.clojure/clojure      {:mvn/version "1.11.1"}
-        org.clojure/clojurescript {:mvn/version "1.10.764"}
-        cljsjs/react {:mvn/version "17.0.2-0"}
-        cljsjs/react-dom {:mvn/version "17.0.2-0"}
-        reagent/reagent {:mvn/version "1.1.0"}
-        com.cleancoders.c3kit/wire {:git/url "https://github.com/cleancoders/c3kit-wire.git" :git/sha "1f0b2781516728f406992b85b06c49487403b360"}
+        org.clojure/clojure            {:mvn/version "1.11.1"}
+        org.clojure/clojurescript      {:mvn/version "1.10.764"}
+        cljsjs/react                   {:mvn/version "17.0.2-0"}
+        cljsjs/react-dom               {:mvn/version "17.0.2-0"}
+        reagent/reagent                {:mvn/version "1.1.0"}
+        com.cleancoders.c3kit/wire     {:git/url "https://github.com/cleancoders/c3kit-wire.git" :git/sha "1f0b2781516728f406992b85b06c49487403b360"}
         com.cleancoders.c3kit/scaffold {:git/url "https://github.com/cleancoders/c3kit-scaffold.git" :git/sha "4eec5be78a6ca094627fd32dde977aab9fa7eb3c"}
         org.clojure/math.combinatorics {:mvn/version "0.2.0"}
-        speclj/speclj {:mvn/version "3.4.3"}
+        speclj/speclj                  {:mvn/version "3.4.3"}
+        compojure/compojure            {:mvn/version "1.7.0" :exclusions [ring/ring-core ring/ring-codec]}
         }
  :aliases {
            :server {:main-opts ["-m" "set.main"]}
