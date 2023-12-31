@@ -49,7 +49,7 @@
     }]
 
    [:.code-input {
-    :max-width "145px"
+    :max-width "100px"
    }]
 
    [:.no-margin {

@@ -12,11 +12,11 @@
     [stats/stats]
     [:br]
     [:div
-     "Join Multiplayer Game:"
-     [:br]
+     [:p.no-margin "Join Multiplayer Game:"]
      [:input.code-input {:type "text" :placeholder "room code"}]
-     [:br]
-     [:br]
+     [:input {:type "button" :value "Join"}]]
+    [:br]
+    [:div
      [:input {:type "button" :value "Create Multiplayer Game"}]]]
    [:div.center
     [cards/buttons settings/state]]
