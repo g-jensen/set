@@ -1,5 +1,5 @@
 (ns set.cardsc-spec
-  (:require [speclj.core :refer :all]
+  (:require [speclj.core #?(:clj :refer :cljs :refer-macros) [context describe it should= should-be-nil should-contain should should-not before with-stubs]]
             [set.cardsc :as sut]))
 
 (def cards-with-no-set [(sut/card :purple :two :diamond :solid)
@@ -15,7 +15,7 @@
                         (sut/card :red :two :squiggle :open)
                         (sut/card :green :three :diamond :open)])
 
-(describe "Set Utilities"
+(describe "Cards"
   (context "determines if a list of cards is a set"
 
     (it "for less than 3 cards"

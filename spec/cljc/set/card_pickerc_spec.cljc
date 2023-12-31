@@ -1,6 +1,6 @@
 (ns set.card-pickerc-spec
   (:require [set.cardsc :as cardsc]
-            [speclj.core :refer :all]
+            [speclj.core #?(:clj :refer :cljs :refer-macros) [context describe it should= should-be-nil should-contain should before with-stubs]]
             [set.card-pickerc :as sut]
             [set.cardsc :as util]
             [set.cardsc-spec :as util-spec]))

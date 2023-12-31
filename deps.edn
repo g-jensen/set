@@ -11,6 +11,8 @@
         org.clojure/math.combinatorics {:mvn/version "0.2.0"}
         speclj/speclj                  {:mvn/version "3.4.3"}
         compojure/compojure            {:mvn/version "1.7.0" :exclusions [ring/ring-core ring/ring-codec]}
+        clj-commons/secretary          {:mvn/version "1.2.4"}
+        venantius/accountant           {:mvn/version "0.2.5"}
         }
  :aliases {
            :server {:main-opts ["-m" "set.main"]}
