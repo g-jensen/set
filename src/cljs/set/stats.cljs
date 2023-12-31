@@ -3,6 +3,6 @@
             [set.cardsc :as cardsc]))
 
 (defn stats []
-  [:div {:id "-stats"}
-   (str "found: " (:found-sets-count @cards/state) " "
-        "exist: " (cardsc/set-count (:cards @cards/state)))])
+  [:div
+   [:h1.no-margin {:id "-found"} (str "Found: " (:found-sets-count @cards/state))]
+   [:p.no-margin {:id "-exist"} (str "Exist: " (cardsc/set-count (:cards @cards/state)))]])

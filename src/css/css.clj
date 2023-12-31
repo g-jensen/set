@@ -48,4 +48,12 @@
     :transform "none"
     }]
 
+   [:.code-input {
+    :max-width "145px"
+   }]
+
+   [:.no-margin {
+    :margin "0px"
+   }]
+
    ])
