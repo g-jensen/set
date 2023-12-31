@@ -13,18 +13,17 @@
     [:div#app]
     [:script {:src "/cljs/c3kit_scaffold.js" :type "text/javascript"}]]])
 
-(defn client-init [data]
+(defn client-init
+  ([] (client-init {}))
+  ([data]
   (let [payload (pr-str (utilc/->transit data))]
     (page/html5
       skeleton
       [:script {:type "text/javascript"}
-       (str "set.core.main(" payload ");")])))
-
-(defn handle [req]
-  (str req))
+       (str "set.core.main(" payload ");")]))))
 
 (defroutes web-handler
-           (GET "/" [] (client-init {}))
-           (GET "/room/:link" [link] (client-init {:link link}))
+           (GET "/" [] (client-init))
+           (GET "/room/:link" [link] (client-init))
            (route/files "/" {:root "resources/public/"})
            (route/not-found "not found"))
