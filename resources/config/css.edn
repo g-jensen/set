@@ -1,7 +1,7 @@
 {
- :source-dir  "src/css"
- :var          css/styles
- :output-file "resources/public/styles.css"
+ :source-dir  "dev/set/styles"
+ :var         set.styles.main/screen
+ :output-file "resources/public/css/set.css"
  :flags       {:pretty-print? true
                :vendors       ["webkit" "moz" "o"]}
  }

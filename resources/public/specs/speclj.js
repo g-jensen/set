@@ -2,7 +2,7 @@
  Speclj + Headless Chrome Test Runner
 
  Usage:
- node speclj.js [auto]
+ node resources/public/specs/speclj-chrome.js [auto]
 
  auto: will only run specs updated after the last run. (default: false)
 
@@ -14,7 +14,7 @@ const fs = require("fs");
 var autoArg = process.argv.pop();
 var timestampFile = path.resolve(__dirname, "../../../.specljs-timestamp");
 var specsHTMLFile = path.resolve(__dirname, "specs.html");
-var nsPrefix = "c3kit.scaffold"
+var nsPrefix = "set"
 
 function lastModified(filepath) {
   try {
@@ -43,7 +43,7 @@ function autoMode() {
 function findUpdatedSpecs(rdeps, deps) {
   var minMillis = readTimestamp().getTime();
   var updated = {};
-  for (var ns in rdeps) {
+  for(var ns in rdeps) {
     var file = deps.idToPath_[ns];
     var path = file.substring(7);
     if (lastModified(path).getTime() >= minMillis) {
@@ -55,7 +55,7 @@ function findUpdatedSpecs(rdeps, deps) {
 
 function buildReverseDeps(deps) {
   var rdeps = {};
-  for (var ns in deps.idToPath_) {
+  for(var ns in deps.idToPath_) {
     if (ns.startsWith(nsPrefix)) {
       var file = deps.idToPath_[ns];
       var requires = deps.dependencies_[file].requires
@@ -68,7 +68,7 @@ function buildReverseDeps(deps) {
           rdeps[rdep][ns] = true;
         }
       }
-      if (!(ns in rdeps)) {
+      if(!(ns in rdeps)) {
         rdeps[ns] = {}
       }
     }
@@ -94,7 +94,7 @@ function findAffectedSpecs(deps) {
   var result = {};
 
   var walkDeps = function (nses) {
-    for (var ns in nses) {
+    for(var ns in nses) {
       if (!(ns in result)) {
         result[ns] = true;
         walkDeps(rdeps[ns])
@@ -109,21 +109,18 @@ function findAffectedSpecs(deps) {
 const puppeteer = require('puppeteer');
 
 (async () => {
-  const browser = await puppeteer.launch({headless: "new"});
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.exposeFunction('autoMode', () => autoMode());
   await page.exposeFunction('findAffectedSpecs', (deps) => findAffectedSpecs(deps));
   await page.exposeFunction('writeTimestamp', () => writeTimestamp());
   await page.goto('file://' + specsHTMLFile);
   page.on('console', msg => {
-    if (msg.text() === "Failed to load resource: net::ERR_FILE_NOT_FOUND") {
+    if (msg.text() === "Failed to load resource: net::ERR_FILE_NOT_FOUND")
       return; // because we aren't loading specs.html over http, many local resources (images, fonts) are not found.
-    }
-    if (msg.type() === "error") {
-      console.log("Error:");
-      console.log(msg.args()[0])
-      console.log(msg);
-    } else
+    else if(msg.type() === 'error')
+      console.error(msg.text());
+    else
       console.log(msg.text());
   });
   var code = await page.evaluate(async () => {
@@ -132,7 +129,8 @@ const puppeteer = require('puppeteer');
       var result = runSpecsFiltered(specs);
       await window.writeTimestamp();
       return result;
-    } catch (e) {
+    }
+    catch (e) {
       console.error(e);
       return 1;
     }

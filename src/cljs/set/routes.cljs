@@ -1,9 +1,10 @@
-(ns set.router
+(ns set.routes
   (:require-macros [secretary.core :refer [defroute]])
   (:require [accountant.core :as accountant]
-            [secretary.core :as secretary]
+            [set.page :as page]
             [c3kit.apron.log :as log]
-            [set.page :as page]))
+            [c3kit.wire.js :as wjs]
+            [secretary.core :as secretary]))
 
 (defn dispatch! [uri]
   (log/debug "dispatching: " uri)
@@ -17,25 +18,22 @@
 (defn- hook-browser-navigation! []
   (accountant/configure-navigation! {:nav-handler dispatch! :path-exists? locate-route}))
 
-(defn- exit-enter-page [page]
-  (let [current-page (:page @page/state)]
-    (when-not (= current-page page)
-      (log/debug "leaving page:" current-page)
-      (page/leaving! current-page)
-      (log/debug "entering page:" page)
-      (page/entering! page))))
-
 (defn load-page! [page]
-  (exit-enter-page page)
-  (.scrollTo js/window 0 0)
+  (page/transition page)
+  (wjs/scroll-to-top)
+  (wjs/page-title= (page/title page))
   (page/install-page! page))
+
+(defn sandbox-routes []
+  (defroute "/sandbox/:page" [page] (load-page! (keyword (str "sandbox/" page))))
+  )
 
 (defn app-routes []
   (secretary/set-config! :prefix "")
 
   (defroute "/" [] (load-page! :homepage))
-  (defroute "/room/:link" [link]
-    (load-page! :room)
-    (swap! page/room assoc :link link))
+  (defroute "/room/:code" [code]
+    (page/install-room! code)
+    (load-page! :room))
 
   (hook-browser-navigation!))

@@ -1,0 +1,3 @@
+{:migrations-ns set.db.migrations
+ :full-schema   set.schema.full/full-schema
+ :config-var    set.config/bucket}

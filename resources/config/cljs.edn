@@ -1,42 +1,40 @@
-{
- ; :env-keys ["property.name" "ENV_NAME"] ; default: ["c3.env" "C3_ENV"]
- :run-cmd "node resources/public/specs/speclj.js"
+{:ns-prefix   "set"
+ :ignore-errors ["goog/i18n/bidi.js"]
+ :env-keys    ["cc.env" "CC_ENV"]
+ :run-cmd     "node resources/public/specs/speclj.js"
  :development {:cache-analysis true
-               :libs           ["src/js/"]
                :optimizations  :none
                :output-dir     "resources/public/cljs/"
-               :output-to      "resources/public/cljs/c3kit_scaffold_dev.js"
+               :output-to      "resources/public/cljs/set_dev.js"
                :pretty-print   true
                :source-map     true
-               :sources        ["spec" "src"]
+               :sources        ["spec/cljc" "spec/cljs" "src/cljc" "src/cljs"]
                :specs          true
                :verbose        false
                :watch-fn       c3kit.scaffold.cljs/on-dev-compiled
+               :parallel-build true
                }
  :production  {
                :cache-analysis false
+               :externs        ["dev/set/externs/gapi.js"]
                :infer-externs  true
-               :libs           ["src/js/"]
                :optimizations  :advanced
                :output-dir     "resources/public/cljs/"
-               :output-to      "resources/public/cljs/c3kit_scaffold.js"
+               :output-to      "resources/public/cljs/set.js"
                :pretty-print   false
-               ;:pretty-print   true
-               ;:pseudo-names   true
-               :sources        ["spec" "src"]
+               :sources        ["src/cljc" "src/cljs"]
                :specs          false
                :verbose        false
                }
  :staging     {
                :cache-analysis false
                :infer-externs  true
-               :libs           ["src/js/"]
                :optimizations  :whitespace
                :output-dir     "resources/public/cljs/"
-               :output-to      "resources/public/cljs/c3kit_scaffold.js"
+               :output-to      "resources/public/cljs/set.js"
                :pretty-print   true
                :pseudo-names   true
-               :sources        ["spec" "src"]
+               :sources        ["src/cljc" "src/cljs"]
                :specs          false
                :verbose        false
                }
