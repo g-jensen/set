@@ -5,7 +5,7 @@
             [set.settings :as settings]
             [set.stats :as stats]))
 
-(defmethod page/render :homepage [_]
+(defmethod page/render :home [_]
   [:div.main-container
    [:div.left-container
     [:br]

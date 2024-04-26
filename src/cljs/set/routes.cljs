@@ -31,7 +31,7 @@
 (defn app-routes []
   (secretary/set-config! :prefix "")
 
-  (defroute "/" [] (load-page! :homepage))
+  (defroute "/" [] (load-page! :home))
   (defroute "/room/:code" [code]
     (page/install-room! code)
     (load-page! :room))

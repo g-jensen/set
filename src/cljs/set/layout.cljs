@@ -1,7 +1,8 @@
 (ns set.layout
   (:require [set.page :as page]
             [c3kit.wire.ajax :as ajax]
-            [c3kit.wire.flash :as flash]))
+            [c3kit.wire.flash :as flash]
+            [set.homepage]))
 
 (defn default []
   [:div#content

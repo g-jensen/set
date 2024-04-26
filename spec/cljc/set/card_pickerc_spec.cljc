@@ -2,13 +2,12 @@
   (:require [set.cardsc :as cardsc]
             [speclj.core #?(:clj :refer :cljs :refer-macros) [context describe it should= should-be-nil should-contain should before with-stubs]]
             [set.card-pickerc :as sut]
-            [set.cardsc :as util]
-            [set.cardsc-spec :as util-spec]))
+            [set.cardsc-spec :as cardsc-spec]))
 
 (describe "Card Picker"
   (it "selects a new card"
     (let [deck [:a :b :c :d]
-          s1 (util/initial-state deck identity)
+          s1 (cardsc/initial-state deck identity)
           s2 {:cards deck :selected-cards [:a] :shuffle-fn identity}]
       (should= [:a] (:selected-cards (sut/pick s1 0)))
       (should= [:b] (:selected-cards (sut/pick s1 1)))
@@ -29,7 +28,7 @@
       (should= [] (:selected-cards (sut/pick s1 2)))))
 
   (it "replaces selected cards if selected is set"
-    (let [deck util/deck
+    (let [deck cardsc/deck
           set (take 3 (drop 3 deck))
           s1 {:cards set
               :selected-cards (take 2 set)
@@ -44,7 +43,7 @@
                (:cards (sut/pick s2 1)))))
 
   (it "ensures that there is always at least one set in cards"
-    (let [bad-cards util-spec/cards-with-no-set
+    (let [bad-cards cardsc-spec/cards-with-no-set
           good-cards (take 3 cardsc/deck)
           s1 {:src-deck       cardsc/deck
               :cards          (concat good-cards (drop 3 bad-cards))
@@ -55,7 +54,7 @@
       (should= (take 12 (cardsc/bad-shuffle cardsc/deck)) (:cards (sut/pick s1 2)))))
 
   (it "removes 3 cards from deck if selected is set"
-    (let [deck util/deck
+    (let [deck cardsc/deck
           set (take 3 deck)
           s1 {:cards          set
               :selected-cards (take 2 set)
@@ -63,7 +62,7 @@
       (should= (drop 3 deck) (:deck (sut/pick s1 2)))))
 
   (it "increases found-sets-count if selected is set"
-    (let [deck util/deck
+    (let [deck cardsc/deck
           set (take 3 deck)
           s1 {:cards set
               :selected-cards (take 2 set)
@@ -74,12 +73,12 @@
       (should= 2 (:found-sets-count (sut/pick s2 2)))))
 
   (it "restocks an empty deck"
-    (let [set (take 3 util/deck)
+    (let [set (take 3 cardsc/deck)
           s1 {:cards set
               :selected-cards (take 2 set)
-              :src-deck util/deck
+              :src-deck cardsc/deck
               :deck [:g :h :i]
               :shuffle-fn identity}
-          s2 (assoc s1 :shuffle-fn util/bad-shuffle)]
-      (should= (drop 12 util/deck) (:deck (sut/pick s1 2)))
-      (should= (drop 12 (util/bad-shuffle util/deck)) (:deck (sut/pick s2 2))))))
+          s2 (assoc s1 :shuffle-fn cardsc/bad-shuffle)]
+      (should= (drop 12 cardsc/deck) (:deck (sut/pick s1 2)))
+      (should= (drop 12 (cardsc/bad-shuffle cardsc/deck)) (:deck (sut/pick s2 2))))))
