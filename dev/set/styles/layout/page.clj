@@ -5,11 +5,11 @@
 (def screen
 (list
 
-[:#app-root :#content {
+#_[:#app-root :#content {
   :height "100%"
 }]
 
-[:#content {
+#_[:#content {
   :display "flex"
   :flex-direction "column"
   :min-height "100vh"
@@ -18,7 +18,7 @@
   :outline "none"
 }]
 
-[:header {
+#_[:header {
   :border-bottom [[(px 1) "solid" light-grey]]
   }
 
@@ -31,11 +31,11 @@
   }]
 ]
 
-[:main {
+#_[:main {
   :flex 1
 }]
 
-[:section {
+#_[:section {
   :position "relative"
   :width "100%"
 }]
