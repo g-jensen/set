@@ -4,7 +4,8 @@
 (defn ->player
   ([nickname]
    {:kind     :player
-    :nickname nickname})
+    :nickname nickname
+    :points   0})
   ([nickname conn-id]
    (merge (->player nickname)
           {:conn-id conn-id})))
@@ -18,3 +19,5 @@
 
 (defn by-nickname [nickname]
   (db/ffind-by :player :nickname nickname))
+(defn by-conn-id [conn-id]
+  (db/ffind-by :player :conn-id conn-id))
