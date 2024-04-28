@@ -2,8 +2,6 @@
   (:require [clojure.math.combinatorics :as combo]
             [clojure.string :as str]))
 
-(def playing-card-count 12)
-(def bad-shuffle #(conj (vec (rest %)) (first %)))
 (def attributes {:color [:red :green :purple]
                  :count [:one :two :three]
                  :shape [:diamond :oval :squiggle]
@@ -35,30 +33,6 @@
 
 (defn contains-set? [cards]
   (some true? (combos->set? cards)))
-
-(defn- playing-cards-contains-set? [cards]
-  (contains-set? (take playing-card-count cards)))
-
-(defn shuffle-until-set [deck shuffle-fn]
-  (if (or (playing-cards-contains-set? deck)
-          (> (count deck) playing-card-count))
-    (->> (shuffle-fn deck)
-         (iterate shuffle-fn)
-         (filter playing-cards-contains-set?)
-         (first))))
-
-(defn reset-cards-and-deck [state deck shuffle-fn]
-  (let [shuffled-deck (shuffle-until-set deck shuffle-fn)]
-    (as-> state state
-          (assoc state :cards (take playing-card-count shuffled-deck))
-          (assoc state :deck (drop playing-card-count shuffled-deck)))))
-
-(defn initial-state [deck shuffle-fn]
-  (-> {:selected-cards   []
-       :src-deck         deck
-       :shuffle-fn       shuffle-fn
-       :found-sets-count 0}
-      (reset-cards-and-deck deck shuffle-fn)))
 
 (defn card->path [card]
   (str "/cards/"

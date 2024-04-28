@@ -1,7 +1,10 @@
 (ns set.cardsc-spec
-  (:require [speclj.core #?(:clj :refer :cljs :refer-macros) [context describe it should= should-be-nil should-contain should should-not before with-stubs]]
+  (:require [speclj.core #?(:clj :refer :cljs :refer-macros) [around context describe it should= should-be-nil should-contain should should-not before with-stubs]]
             [set.cardsc :as sut]))
 
+(def bad-shuffle #(conj (vec (rest %)) (first %)))
+(defn with-bad-shuffle []
+  (around [it] (with-redefs [shuffle bad-shuffle] (it))))
 (def cards-with-no-set [(sut/card :purple :two :diamond :solid)
                         (sut/card :red :one :diamond :open)
                         (sut/card :red :two :oval :striped)
@@ -16,6 +19,7 @@
                         (sut/card :green :three :diamond :open)])
 
 (describe "Cards"
+  (with-bad-shuffle)
   (context "determines if a list of cards is a set"
 
     (it "for less than 3 cards"
@@ -119,44 +123,6 @@
   (context "has a deck"
     (it "of length 81"
       (should= 81 (count sut/deck))))
-
-  (context "shuffles until there is a set"
-    (it "with a possible set"
-      (let [d1 sut/deck
-            d2 (concat cards-with-no-set sut/deck)]
-        (should= d1 (sut/shuffle-until-set d1 identity))
-        (should= (concat (drop 2 d2) (take 2 d2))
-                 (sut/shuffle-until-set d2 sut/bad-shuffle))))
-    (it "with no possible set"
-      (should-be-nil (sut/shuffle-until-set cards-with-no-set sut/bad-shuffle))))
-
-  (context "has an initial state"
-    (it "with correct keys"
-      (let [d1 sut/deck
-            d2 (rest sut/deck)
-            shuffled-d2 (sut/bad-shuffle d2)]
-        (should= {:cards (take 12 d1)
-                  :selected-cards []
-                  :deck (drop 12 d1)
-                  :src-deck d1
-                  :shuffle-fn identity
-                  :found-sets-count 0} (sut/initial-state d1 identity))
-        (should= {:cards (take 12 shuffled-d2)
-                  :selected-cards []
-                  :deck (drop 12 shuffled-d2)
-                  :src-deck d2
-                  :shuffle-fn sut/bad-shuffle
-                  :found-sets-count 0} (sut/initial-state d2 sut/bad-shuffle))))
-
-    (it "that keeps shuffling until there is a set is in cards"
-      (let [d1 (concat cards-with-no-set sut/deck)
-            shuffled-d1 (concat (drop 2 d1) (take 2 d1))]
-        (should= {:cards (take 12 shuffled-d1)
-                  :selected-cards []
-                  :deck (drop 12 shuffled-d1)
-                  :src-deck d1
-                  :shuffle-fn sut/bad-shuffle
-                  :found-sets-count 0} (sut/initial-state d1 sut/bad-shuffle)))))
 
   (it "card->file path"
     (should= "/cards/green-one-diamond-open.png"
