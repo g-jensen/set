@@ -3,13 +3,17 @@
             [c3kit.bucket.spec-helperc :as helperc]
             [set.playerc :as playerc]
             [set.roomc :as roomc]
+            [set.gamec :as gamec]
+            [set.cardsc :as cardsc]
             [set.schema.room :as room.schema]
             [set.schema.player :as player.schema]
+            [set.schema.game :as game.schema]
             [speclj.core #?(:clj :refer :cljs :refer-macros) [before]])
   #?(:clj (:import (clojure.lang IDeref))))
 
 (def schemas [room.schema/all
-              player.schema/all])
+              player.schema/all
+              game.schema/all])
 
 (def mojave-code "mojave")
 (def nipton-code "nipton")
@@ -20,6 +24,7 @@
 (def benny-atom (atom nil))
 (def dogmeat-atom (atom nil))
 (def nipton-atom (atom nil))
+(def caravan-atom (atom nil))
 
 (deftype Entity [atm]
   #?(:clj IDeref :cljs cljs.core/IDeref)
@@ -31,6 +36,7 @@
 (def benny (Entity. benny-atom))                            ;; a player at mojave
 (def dogmeat (Entity. dogmeat-atom))                        ;; a player who hasn't joined
 (def nipton (Entity. nipton-atom))                          ;; an empty room
+(def caravan (Entity. caravan-atom))                        ;; a game
 
 (defn init []
   (reset! mojave-atom (roomc/create-room! mojave-code))
@@ -39,6 +45,7 @@
   (reset! boone-atom (db/tx (playerc/->player "Boone" "conn-boone")))
   (reset! benny-atom (db/tx (playerc/->player "Benny" "conn-benny")))
   (reset! dogmeat-atom (db/tx (playerc/->player "Dogmeat" "conn-dogmeat")))
+  (reset! caravan-atom (db/tx (gamec/->game cardsc/deck identity)))
   (db/tx (roomc/add-player @mojave @yes-man))
   (db/tx (roomc/add-player @mojave @boone))
   (db/tx (roomc/add-player @mojave @benny)))
