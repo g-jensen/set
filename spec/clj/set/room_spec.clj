@@ -1,16 +1,11 @@
 (ns set.room-spec
-  (:require [c3kit.apron.utilc :as utilc]
-            [c3kit.bucket.api :as db]
-            [c3kit.bucket.spec-helperc :as helperc]
+  (:require [c3kit.bucket.api :as db]
             [c3kit.wire.apic :as apic]
-            [c3kit.wire.websocket :as ws]
             [set.fallout :as fo :refer [mojave nipton yes-man boone benny]]
             [set.dispatch :as dispatch]
             [set.playerc :as playerc]
             [set.room :as sut]
             [set.roomc :as roomc]
-            [set.schema.player :as player]
-            [set.schema.room :as room]
             [speclj.core :refer :all]))
 
 (def idx (atom 5))
@@ -31,11 +26,9 @@
   (context "ws-create-room"
 
     (it "success"
-      (should= (apic/ok) (sut/ws-create-room {})))
-
-    (it "saves room to db"
-      (sut/ws-create-room {})
-      (should-not-be-nil (roomc/by-code "89ABCD")))
+      (let [response (sut/ws-create-room {})]
+        (should= :ok (:status response))
+        (should= ["89ABCD"] (:payload response))))
 
     (it "does not duplicate room codes"
       (db/tx (roomc/->room "89ABCD"))
@@ -43,7 +36,7 @@
       (should-not-be-nil (roomc/by-code "EFHJKL"))))
 
   (context "ws-join-room"
-    (redefs-around [dispatch/push-to-connections! (stub :push-to-connections!)])
+    (redefs-around [dispatch/push-to-players! (stub :push-to-players!)])
 
     (before (roomc/create-room! "asylum"))
 
@@ -73,18 +66,56 @@
         (let [player (playerc/by-nickname "Sewer Rat")]
           (should-not-be-nil player)
           (should= [@nipton player] (:payload response))
-          (should= (:id player) (:host @fo/nipton))
+          (should= (:id player) (:host @nipton))
           (should= "conn-rat" (:conn-id player)))))
 
     (it "notifies players of new room state"
       (let [response (sut/ws-join-room {:params        {:nickname "Giant Crow" :room-code fo/mojave-code}
-                                        :connection-id "conn-crow"})]
+                                        :connection-id "conn-crow"})
+            crow     (playerc/by-nickname "Giant Crow")]
         (should= :ok (:status response))
-        (should-have-invoked :push-to-connections!)))
+        (should-have-invoked :push-to-players! {:with [(map db/entity (:players @mojave))
+                                                       :room/update
+                                                       [@mojave crow]]})))
 
     (it "responds with current room state & all current players"
       (let [response (sut/ws-join-room {:params        {:nickname "Giant Crow" :room-code fo/mojave-code}
                                         :connection-id "conn-crow"})
             crow     (playerc/by-nickname "Giant Crow")]
         (should= :ok (:status response))
-        (should= (set [@mojave crow @yes-man @boone @benny]) (set (:payload response)))))))
+        (should= (set [@mojave crow @yes-man @boone @benny]) (set (:payload response))))))
+
+  (context "ws-leave-room"
+    (redefs-around [dispatch/push-to-players! (stub :push-to-players!)])
+
+    (it "removes player from room"
+      (sut/ws-leave-room {:connection-id "conn-benny"})
+      (should-not-contain (:id @benny) (:players @mojave))
+      (should= (mapv :id [@yes-man @boone]) (:players @mojave)))
+
+    (it "notifies players of new room state"
+      (sut/ws-leave-room {:connection-id "conn-benny"})
+      (should-have-invoked :push-to-players! {:with [(map db/entity (:players @mojave))
+                                                     :room/update
+                                                     [@mojave]]})))
+
+  (context "ws-fetch-room"
+    (before (roomc/create-room! "depths"))
+
+    (it "missing room"
+      (let [response (sut/ws-fetch-room {:params {}})]
+        (should= :fail (:status response))
+        (should-be-nil (:payload response))
+        (should= "Missing room!" (apic/flash-text response 0))))
+
+    (it "room does not exist"
+      (let [response (sut/ws-fetch-room {:params {:room-code "parish"}})]
+        (should= :fail (:status response))
+        (should-be-nil (:payload response))
+        (should= "Room does not exist!" (apic/flash-text response 0))))
+
+    (it "fetches room"
+      (let [[_ crow] (:payload (sut/ws-join-room {:params {:nickname "Giant Crow" :room-code fo/nipton-code}}))
+            response (sut/ws-fetch-room {:params {:room-code fo/nipton-code}})]
+        (should= :ok (:status response))
+        (should= [@nipton crow] (:payload response))))))
