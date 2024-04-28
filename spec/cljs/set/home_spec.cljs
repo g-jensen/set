@@ -15,6 +15,7 @@
 (describe "Home"
   (with-stubs)
   (wire/stub-ws)
+  (stub-navigate!)
   (wire/with-root-dom)
   (before (reset! state/nickname nil))
 
@@ -33,7 +34,6 @@
         (should= "Benny" @state/nickname))))
 
   (context "join room"
-    (stub-navigate!)
     (context "with nickname and code"
       (it "Yes Man, ABC123"
         (reset! state/nickname "Yes Man")
@@ -87,4 +87,14 @@
         (it "is blank"
           (reset! state/nickname " ")
           (wire/click! "#-create-room-button")
-          (should-not-have-invoked :ws/call!))))))
+          (should-not-have-invoked :ws/call!)))))
+
+  (context "singleplayer button"
+    (before (wire/render [sut/home state/nickname]))
+
+    (it "exists"
+      (should-select "#-singleplayer-button"))
+
+    (it "takes you to the singleplayer gamemode"
+      (wire/click! "#-singleplayer-button")
+      (should-have-invoked :redirect! {:with ["/singleplayer"]}))))

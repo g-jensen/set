@@ -2,7 +2,8 @@
   (:require [set.page :as page]
             [c3kit.wire.ajax :as ajax]
             [c3kit.wire.flash :as flash]
-            [set.home]))
+            [set.home]
+            [set.singleplayer]))
 
 (defn default []
   [:div#content

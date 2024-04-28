@@ -19,6 +19,10 @@
   [:div
    [:h1 "Welcome to Set"]
    [:div
+    [:button {:id "-singleplayer-button"
+              :on-click #(accountant/navigate! "/singleplayer")}
+     "Singleplayer"]]
+   [:div
     [:input {:type        "text"
              :id          "-nickname-input"
              :placeholder "Enter your nickname"
