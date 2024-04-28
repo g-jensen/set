@@ -1,8 +1,7 @@
 (ns set.stats
-  (:require [set.cards :as cards]
-            [set.cardsc :as cardsc]))
+  (:require [set.cardsc :as cardsc]))
 
-(defn stats []
+(defn stats [state-ratom]
   [:div
-   [:h1.no-margin {:id "-found"} (str "Found: " (:found-sets-count @cards/state))]
-   [:p.no-margin {:id "-exist"} (str "Exist: " (cardsc/set-count (:cards @cards/state)))]])
+   [:h1.no-margin {:id "-found"} (str "Found: " (:found-sets-count @state-ratom))]
+   [:p.no-margin {:id "-exist"} (str "Exist: " (cardsc/set-count (:cards @state-ratom)))]])
