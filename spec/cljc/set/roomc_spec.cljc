@@ -1,6 +1,5 @@
 (ns set.roomc-spec
-  (:require [c3kit.apron.utilc :as utilc]
-            [c3kit.bucket.api :as db]
+  (:require [c3kit.bucket.api :as db]
             [set.fallout :as fo :refer [nipton dogmeat boone benny]]
             [set.playerc :as playerc]
             [set.roomc :as sut]
