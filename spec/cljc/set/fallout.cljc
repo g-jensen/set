@@ -45,7 +45,7 @@
   (reset! boone-atom (db/tx (playerc/->player "Boone" "conn-boone")))
   (reset! benny-atom (db/tx (playerc/->player "Benny" "conn-benny")))
   (reset! dogmeat-atom (db/tx (playerc/->player "Dogmeat" "conn-dogmeat")))
-  (reset! caravan-atom (db/tx (gamec/->game cardsc/deck identity)))
+  (reset! caravan-atom (db/tx (gamec/->game cardsc/deck)))
   (db/tx (roomc/add-player @mojave @yes-man))
   (db/tx (roomc/add-player @mojave @boone))
   (db/tx (roomc/add-player @mojave @benny)))
