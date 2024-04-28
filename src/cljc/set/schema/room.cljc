@@ -4,16 +4,11 @@
 (def room
   {:kind         (s/kind :room)
    :id           s/id
+   :state        {:type :keyword :validate s/present? :message "must be present"}
    :code         {:type :string :validate s/present? :message "must be present"}
    :host         {:type :long}
-   :players      {:type [:long] :validate s/present? :message "must be present"}
-
-   :state        {:type :keyword :validate s/present? :message "must be present"}
-
+   :players      {:type :seq :spec {:type :long} :validate s/present? :message "must be present"}
    :round-start  {:type :instant}
-   :letter       {:type :string}
-   :categories   {:type [:string]}
-   :category-idx {:type :long}
    })
 
 (def all [room])
