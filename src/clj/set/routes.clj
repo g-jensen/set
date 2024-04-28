@@ -60,9 +60,6 @@
    :room/join           'set.room/ws-join-room
    :room/fetch          'set.room/ws-fetch-room
    :game/start          'set.game/ws-start-game
-   :game/submit-answers 'set.game/ws-submit-answers
-   :game/update-answer  'set.game/ws-update-answer
-   :game/next-category  'set.game/ws-next-category
    })
 
 (defn sleep-for-10 [] (Thread/sleep 10000))
