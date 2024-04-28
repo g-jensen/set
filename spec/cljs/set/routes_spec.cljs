@@ -19,4 +19,5 @@
              (should= "shrine" (:room-code @page/state)))
   (it-routes "/room/nipton" :room
              (should= "nipton" (:room-code @page/state)))
+  (it-routes "/singleplayer" :singleplayer)
   )

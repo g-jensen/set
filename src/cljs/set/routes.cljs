@@ -35,5 +35,6 @@
   (defroute "/room/:code" [code]
     (page/install-room! code)
     (load-page! :room))
+  (defroute "/singleplayer" [] (load-page! :singleplayer))
 
   (hook-browser-navigation!))
