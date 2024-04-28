@@ -14,7 +14,6 @@
    :id                s/id
    :cards             {:type :seq :spec {:type :any} :validate s/present? :message "must be present"}
    :deck              {:type :seq :spec {:type :any} :validate s/present? :message "must be present"}
-   :statistics        {:type :any :validate s/present? :message "must be present"}
    })
 
 (def all [game card])
