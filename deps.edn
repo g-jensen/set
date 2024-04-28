@@ -9,7 +9,7 @@
              com.atlassian.commonmark/commonmark                       {:mvn/version "0.15.2"} ;; Markdown
              com.atlassian.commonmark/commonmark-ext-gfm-strikethrough {:mvn/version "0.15.2"} ;; Github flavor markdown (strikethrough)
              com.atlassian.commonmark/commonmark-ext-gfm-tables        {:mvn/version "0.15.2"} ;; Github flavor markdown (tables)
-             com.cleancoders.c3kit/apron         {:git/url "git@github.com:cleancoders/c3kit-apron.git" :git/sha "5b71141c3f4a96af0b68841aa44e089ab59cb505"}
+             com.cleancoders.c3kit/apron         {:git/url "git@github.com:cleancoders/c3kit-apron.git" :git/sha "44b3e6a5e541d78f5d99fd1089b74e8bf81d075f"}
              com.cleancoders.c3kit/bucket        {:git/url "git@github.com:cleancoders/c3kit-bucket.git" :git/sha "4c6ab21c20da27c9ab044cedfc1d0429ab49b507"}
              com.cleancoders.c3kit/wire          {:git/url "git@github.com:cleancoders/c3kit-wire.git" :git/sha "19f87c52c6a7d80387cb26dd07a6c128d4a21ce5"}
              com.datomic/peer                    {:mvn/version "1.0.6735"}
