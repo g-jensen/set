@@ -3,7 +3,7 @@
             [set.cardsc :as cardsc]
             [set.gamec :as gamec]
             [set.page :as page]
-            [set.cards :as cards]
+            [set.game :as game]
             [set.state :as state]))
 
 (defmethod page/entering! :singleplayer [_]
@@ -15,6 +15,6 @@
   [:div.main-container
    [:div.left-container]
    [:div.center
-    [cards/card-buttons state/game cards/state]]
+    [game/card-buttons state/game game/state]]
    [:div
-    [cards/colorblind-button cards/state]]])
+    [game/colorblind-button game/state]]])

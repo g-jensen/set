@@ -1,4 +1,4 @@
-(ns set.cards-spec
+(ns set.game-spec
   (:require-macros [speclj.core :refer [should-end-with should-have-invoked with-stubs stub around describe context it should= should-be-nil should-contain should should-not before should-not-be-nil]]
                    [c3kit.wire.spec-helperc :refer [should-not-select should-select]])
   (:require [c3kit.apron.corec :as ccc]
@@ -6,7 +6,7 @@
             [set.gamec :as gamec]
             [speclj.core]
             [set.cardsc :as cardsc]
-            [set.cards :as sut]
+            [set.game :as sut]
             [c3kit.wire.spec-helper :as wire]))
 
 (def game (reagent/atom (gamec/->game cardsc/deck)))

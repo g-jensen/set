@@ -1,4 +1,4 @@
-(ns set.cards
+(ns set.game
   (:require [c3kit.wire.util :as util]
             [reagent.core :as reagent]
             [set.cardsc :as cardsc]))
