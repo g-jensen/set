@@ -1,13 +1,21 @@
 (ns set.game
-  (:require [c3kit.wire.util :as util]
+  (:require [c3kit.bucket.api :as db]
+            [c3kit.wire.util :as util]
             [reagent.core :as reagent]
-            [set.cardsc :as cardsc]))
-
-(defmulti on-three-cards-selected! :mode)
+            [set.cardsc :as cardsc]
+            [set.gamec :as gamec]
+            [set.state :as state]))
 
 (def initial-state {:selected-cards    []
                     :color-blind-mode? false})
 (def state (reagent/atom initial-state))
+
+(defmulti on-three-cards-selected! :mode)
+
+(defmethod on-three-cards-selected! :singleplayer [_]
+  (let [selected (:selected-cards @state)]
+    (gamec/process-card-submission! @state/game selected)
+    (swap! state assoc :selected-cards [])))
 
 (defn- selected? [state card]
   (some #{card} (:selected-cards state)))

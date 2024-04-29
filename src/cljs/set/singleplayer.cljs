@@ -7,14 +7,19 @@
             [set.state :as state]))
 
 (defmethod page/entering! :singleplayer [_]
+  (mapv #(db/delete %) (db/find :game))
+  (swap! game/state assoc :mode :singleplayer)
   (db/tx (gamec/->game (shuffle cardsc/deck))))
 
 (defmethod page/exiting! :singleplayer [_])
 
-(defmethod page/render :singleplayer [_]
+(defn singleplayer [game-ratom state-ratom]
   [:div.main-container
    [:div.left-container]
    [:div.center
-    [game/card-buttons state/game game/state]]
+    [game/card-buttons game-ratom state-ratom]]
    [:div
-    [game/colorblind-button game/state]]])
+    [game/colorblind-button state-ratom]]])
+
+(defmethod page/render :singleplayer [_]
+  [singleplayer state/game game/state])
