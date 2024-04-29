@@ -25,7 +25,7 @@
 ;document/screen
 page/screen
 ;structure/screen
-;mini-classes/screen
+mini-classes/screen
 
 ; Elements
 ;typography/screen
