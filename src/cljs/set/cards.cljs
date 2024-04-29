@@ -1,27 +1,52 @@
 (ns set.cards
-  (:require [reagent.core :as reagent]
-            [set.card-pickerc :as picker]
-            [set.cardsc :as cardsc]
-            [set.color-blind :as cb]))
+  (:require [c3kit.wire.util :as util]
+            [reagent.core :as reagent]
+            [set.cardsc :as cardsc]))
 
-(def initial-state (cardsc/initial-state cardsc/deck shuffle))
+(def initial-state {:selected-cards    []
+                    :color-blind-mode? false})
 (def state (reagent/atom initial-state))
 
-(defn on-click-card! [idx]
-  (swap! state picker/pick idx))
+(defn- selected? [state card]
+  (some #{card} (:selected-cards state)))
 
-(def selected? #(picker/selected? @state %))
+(defn- select-card [state card]
+  (update state :selected-cards conj card))
 
-(defn card->button [idx card _]
-  [:div.card {:class    (when (selected? card) "card-selected")
-              :id       (str "-card-" idx)
-              :on-click #(on-click-card! idx)}
-   (when @cb/color-blind-mode? [:div.color-blind-indicator
-                                {:id (str "-color-blind-" idx)}
-                                (cardsc/color-label card)])
-   [:input {:type     "image"
-            :src      (cardsc/card->path card)}]])
+(defn- deselect-card [state card]
+  (update state :selected-cards #(remove #{card} %)))
 
-(defn buttons [settings]
+(defn- on-click-card! [state-ratom card]
+  (if-not (selected? @state-ratom card)
+    (reset! state-ratom (select-card @state-ratom card))
+    (reset! state-ratom (deselect-card @state-ratom card))))
+
+(defn card->button [state-ratom card idx]
+  [:div.card
+   {:id (str "-card-" idx)
+    :class (when (selected? @state-ratom card) "card-selected")
+    :on-click #(on-click-card! state-ratom card)}
+   (when (:color-blind-mode? @state-ratom)
+     [:div.color-blind-indicator
+      {:id (str "-color-blind-" idx)}
+      (cardsc/color-label card)])
+   [:input {:type  "image"
+            :id    (str "-card-image-" idx)
+            :src   (cardsc/card->path card)}]])
+
+(defn card-buttons [game-ratom state-ratom]
   [:div.card-container
-   (map-indexed (fn [idx card] [card->button idx card settings]) (:cards @state))])
+   {:id "-card-buttons"}
+   (let [cards (:cards @game-ratom)]
+     (util/with-react-keys
+       (map-indexed (fn [idx card] [card->button state-ratom card idx]) cards)))])
+
+(defn- toggle-color-blind [state]
+  (update state :color-blind-mode? not))
+
+(defn colorblind-button [state-ratom]
+  [:<>
+   [:input {:type "checkbox"
+            :id "-color-blind-toggle"
+            :on-click #(reset! state-ratom (toggle-color-blind @state-ratom))}]
+   "color blind mode"])
