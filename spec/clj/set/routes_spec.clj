@@ -45,6 +45,7 @@
   ;; web routes
   ; TODO - fixme
   (test-route "/" :get set.layouts/web-rich-client)
+  (test-route "/singleplayer" :get set.layouts/web-rich-client)
   (test-route "/room/shrine" :get set.layouts/web-rich-client)
   ;(test-route "/forgot-password" :get set.layouts/web-rich-client)
   ;(test-route "/recover-password/foo" :get set.layouts/web-rich-client)

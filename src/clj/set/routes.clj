@@ -84,6 +84,7 @@
   (lazy-routes
     {
      ["/" :get]               set.layouts/web-rich-client
+     ["/singleplayer" :get]               set.layouts/web-rich-client
      ["/room/:code" :get]     set.layouts/web-rich-client
      ;["/error" :any]                            set.errors/web-error
      ;["/forgot-password" :get]                  set.layouts/web-rich-client
