@@ -3,6 +3,8 @@
             [reagent.core :as reagent]
             [set.cardsc :as cardsc]))
 
+(defmulti on-three-cards-selected! :mode)
+
 (def initial-state {:selected-cards    []
                     :color-blind-mode? false})
 (def state (reagent/atom initial-state))
@@ -16,10 +18,15 @@
 (defn- deselect-card [state card]
   (update state :selected-cards #(remove #{card} %)))
 
+(defn- maybe-call-three-cards-selected! [state]
+  (when (= 3 (count (:selected-cards state)))
+    (on-three-cards-selected! state)))
+
 (defn- on-click-card! [state-ratom card]
   (if-not (selected? @state-ratom card)
     (reset! state-ratom (select-card @state-ratom card))
-    (reset! state-ratom (deselect-card @state-ratom card))))
+    (reset! state-ratom (deselect-card @state-ratom card)))
+  (maybe-call-three-cards-selected! @state-ratom))
 
 (defn card->button [state-ratom card idx]
   [:div.card

@@ -13,6 +13,7 @@
 (def cards (:cards @game))
 (def card-0 (nth cards 0))
 (def card-1 (nth cards 1))
+(def card-2 (nth cards 2))
 (def green-card (ccc/ffilter #(= :green (% :color)) cardsc/deck))
 
 (describe "Cards"
@@ -75,6 +76,16 @@
         (wire/click! "#-card-0")
         (wire/click! "#-card-0")
         (should= [] (:selected-cards @sut/state)))
+
+      (it "has callback when three cards are selected"
+        (with-redefs [sut/on-three-cards-selected! (stub :on-three-cards-selected!)]
+          (wire/render [sut/card->button sut/state card-0 0])
+          (wire/click! "#-card-0")
+          (wire/render [sut/card->button sut/state card-1 1])
+          (wire/click! "#-card-1")
+          (wire/render [sut/card->button sut/state card-2 2])
+          (wire/click! "#-card-2")
+          (should-have-invoked :on-three-cards-selected! {:times 1})))
 
       (it "updates class"
         (wire/render [sut/card->button sut/state card-0 0])
