@@ -2,7 +2,6 @@
   (:require-macros [speclj.core :refer [stub describe context it should= should-be-nil should-contain should should-not before should-not-be-nil]])
   (:require [c3kit.wire.spec-helper :as wire]
             [reagent.core :as reagent]
-            [set.cards :as cards]
             [set.cardsc :as cardsc]
             [speclj.core]
             [set.stats :as sut]))
@@ -10,6 +9,8 @@
 (def state (reagent/atom {}))
 
 (describe "Stats"
+  (wire/with-root-dom)
+
   (it "displays stats"
     (with-redefs [cardsc/set-count (constantly 2)]
       (swap! state assoc :found-sets-count 1)
