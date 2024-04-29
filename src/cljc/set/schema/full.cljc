@@ -5,7 +5,6 @@
 
 (def full-schema
   [game/game
-   game/card
    room/room
    player/answer
    player/player])
