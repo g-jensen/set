@@ -34,12 +34,14 @@
   (context "three cards selected"
     (it "updates game and game state"
       (page/entering! :singleplayer)
-      (let [initial-game @state/game]
+      (let [initial-game @state/game
+            selected-cards (mapv #(nth cardsc/deck %) (range 3 6))]
         (wire/render [sut/singleplayer state/game game/state])
         (wire/click! "#-card-2")
         (wire/click! "#-card-3")
         (wire/click! "#-card-4")
         (should-not= initial-game (db/ffind :game))
+        (should= (gamec/process-card-submission @state/game selected-cards) (db/ffind :game))
         (should= [] (:selected-cards @game/state)))))
 
   (context "stats"
