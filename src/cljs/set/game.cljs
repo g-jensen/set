@@ -15,6 +15,8 @@
 (defmethod on-three-cards-selected! :singleplayer [_]
   (let [selected (:selected-cards @state)]
     (gamec/process-card-submission! @state/game selected)
+    (when (cardsc/set? selected)
+      (swap! state update :found-sets-count inc))
     (swap! state assoc :selected-cards [])))
 
 (defn- selected? [state card]

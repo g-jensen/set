@@ -40,4 +40,21 @@
         (wire/click! "#-card-3")
         (wire/click! "#-card-4")
         (should-not= initial-game (db/ffind :game))
-        (should= [] (:selected-cards @game/state))))))
+        (should= [] (:selected-cards @game/state)))))
+
+  (context "stats"
+    (it "exists"
+      (wire/render [sut/singleplayer game/state state/game])
+      (should-select "#-found")
+      (should-select "#-exist"))
+
+    (it "displays found and exist"
+      (with-redefs [cardsc/set-count (constantly 2)]
+        (swap! game/state assoc :found-sets-count 1)
+        (wire/render [sut/stats state/game game/state])
+        (should= "Found: 1" (wire/html! "#-found"))
+        (should= "Exist: 2" (wire/html! "#-exist"))
+        (swap! game/state assoc :found-sets-count 2)
+        (wire/flush)
+        (should= "Found: 2" (wire/html! "#-found"))
+        (should= "Exist: 2" (wire/html! "#-exist"))))))
