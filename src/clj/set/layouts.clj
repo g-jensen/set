@@ -41,7 +41,7 @@
             [:link {:rel "icon" :sizes "512x512" :type "image/png" :href "/images/favicons/favicon-512x512.png"}]
             [:link {:rel "apple-touch-icon" :sizes "180x180" :href "/images/favicons/apple-touch-icon.png"}]
             [:link {:rel "manifest" :href "/images/favicons/site.webmanifest"}]
-            [:script {:src "https://kit.fontawesome.com/982c21555a.js" :crossorigin "anonymous"}]
+            ;[:script {:src "https://kit.fontawesome.com/982c21555a.js" :crossorigin "anonymous"}]
             (if config/development?
               (list
                 (page/include-js "/cljs/goog/base.js")
