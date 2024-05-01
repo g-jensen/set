@@ -84,7 +84,7 @@
     (fn [nickname-ratom]
       [:div.center-div.margin-top-plus-5
        {:id "-nickname-prompt"}
-       [:h1 "Enter nickname to join room..."]
+       [:h1.text-align-center "Enter nickname to join room..."]
        [:div.center
         [:input {:type "text"
                  :id "-nickname-input"

@@ -22,7 +22,7 @@
 
 ; Layout
 ;reset/screen
-;document/screen
+document/screen
 page/screen
 ;structure/screen
 mini-classes/screen
