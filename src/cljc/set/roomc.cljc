@@ -18,9 +18,6 @@
         players (conj players id)]
     (assoc room :players players)))
 
-(defn add-player! [room player]
-  (db/tx (add-player room player)))
-
 (defn start [room]
   (assoc room :state :started))
 
@@ -28,9 +25,6 @@
   (let [id (playerc/or-id player)
         players (remove #{id} players)]
     (assoc room :players players)))
-
-(defn remove-player! [room player]
-  (db/tx (remove-player room player)))
 
 (defn join-room! [room player]
   (let [room   (add-player room player)]

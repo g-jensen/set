@@ -46,9 +46,9 @@
   (reset! benny-atom (db/tx (playerc/->player "Benny" "conn-benny")))
   (reset! dogmeat-atom (db/tx (playerc/->player "Dogmeat" "conn-dogmeat")))
   (reset! caravan-atom (db/tx (gamec/->game cardsc/deck)))
-  (roomc/add-player! @mojave @yes-man)
-  (roomc/add-player! @mojave @boone)
-  (roomc/add-player! @mojave @benny))
+  (roomc/join-room! @mojave @yes-man)
+  (roomc/join-room! @mojave @boone)
+  (roomc/join-room! @mojave @benny))
 
 (defn with-schemas
   ([] (with-schemas schemas))
