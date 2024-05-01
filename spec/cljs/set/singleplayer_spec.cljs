@@ -17,6 +17,7 @@
   (wire/with-root-dom)
   (fo/with-schemas)
   (cardsc-spec/with-bad-shuffle)
+  (before (reset! game/state game/initial-state))
 
   (context "page/entering!"
     (it "updates game state"
