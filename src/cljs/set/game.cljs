@@ -34,8 +34,8 @@
 
 (defn- on-click-card! [state-ratom card]
   (if-not (selected? @state-ratom card)
-    (reset! state-ratom (select-card @state-ratom card))
-    (reset! state-ratom (deselect-card @state-ratom card)))
+    (swap! state-ratom #(select-card % card))
+    (swap! state-ratom #(deselect-card % card)))
   (maybe-call-three-cards-selected! @state-ratom))
 
 (defn card->button [state-ratom card idx]
@@ -65,5 +65,5 @@
   [:<>
    [:input {:type "checkbox"
             :id "-color-blind-toggle"
-            :on-click #(reset! state-ratom (toggle-color-blind @state-ratom))}]
+            :on-click #(swap! state-ratom toggle-color-blind)}]
    "color blind mode"])
