@@ -4,6 +4,7 @@
   (:require [set.page :as page]
             [set.routes :as sut]
             [secretary.core :as secretary]
+            [set.room :as room]
             [speclj.core]))
 
 (describe "Routes"
@@ -16,8 +17,8 @@
 
   (it-routes "/" :home)
   (it-routes "/room/shrine" :room
-             (should= "shrine" (:room-code @page/state)))
+             (should= "shrine" @room/code))
   (it-routes "/room/nipton" :room
-             (should= "nipton" (:room-code @page/state)))
+             (should= "nipton" @room/code))
   (it-routes "/singleplayer" :singleplayer)
   )

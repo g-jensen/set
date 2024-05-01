@@ -15,9 +15,6 @@
 (def current (reagent/track #(:page @state)))
 (def previous (reagent/track #(:previous-page @state)))
 
-(defn install-room! [code]
-  (swap! state assoc :room-code code))
-
 (defn cursor
   ([path] (cursor path nil))
   ([path value]
@@ -38,7 +35,7 @@
 (defmethod entering! :default [_])
 (defmethod exiting! :default [_])
 (defmethod reentering! :default [page])
-(defmethod title :default [page] "set")
+(defmethod title :default [page] "Set")
 
 (defn transition [page]
   (let [current-page (:page @state)]

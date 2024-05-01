@@ -3,7 +3,8 @@
             [c3kit.wire.ajax :as ajax]
             [c3kit.wire.flash :as flash]
             [set.home]
-            [set.singleplayer]))
+            [set.singleplayer]
+            [set.room]))
 
 (defn default []
   [:div#content
