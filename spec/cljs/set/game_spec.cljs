@@ -44,9 +44,9 @@
 
     (it "toggles state on click"
       (should-not (:color-blind-mode? @sut/state))
-      (wire/click! "#-color-blind-toggle")
+      (wire/change! "#-color-blind-toggle" true)
       (should (:color-blind-mode? @sut/state))
-      (wire/click! "#-color-blind-toggle")
+      (wire/change! "#-color-blind-toggle" false)
       (should-not (:color-blind-mode? @sut/state))))
 
   (context "card->button"
@@ -97,7 +97,7 @@
 
     (it "adds colorblind aid"
       (wire/render [sut/colorblind-button sut/state])
-      (wire/click! "#-color-blind-toggle")
+      (wire/change! "#-color-blind-toggle" true)
 
       (wire/render [sut/card->button sut/state card-0 0])
       (should= "R" (wire/html! "#-color-blind-0"))
@@ -105,7 +105,7 @@
       (should= "G" (wire/html! "#-color-blind-1"))
 
       (wire/render [sut/colorblind-button sut/state])
-      (wire/click! "#-color-blind-toggle")
+      (wire/change! "#-color-blind-toggle" false)
 
       (wire/render [sut/card->button sut/state green-card 1])
       (should-not-select "#-color-blind-1"))))

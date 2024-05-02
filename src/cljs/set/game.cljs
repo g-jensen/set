@@ -72,5 +72,5 @@
    [:input {:type "checkbox"
             :id "-color-blind-toggle"
             :checked (:color-blind-mode? @state-ratom)
-            :on-click #(swap! state-ratom toggle-color-blind)}]
+            :on-change #(swap! state-ratom toggle-color-blind)}]
    "color blind mode"])
