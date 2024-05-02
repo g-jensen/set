@@ -61,12 +61,12 @@
   ;(test-route "/ajax/user/signin" :post set.auth/ajax-login)
 
   ;; websocket handlers
-  ;; (test-webs :ws/close             set.room/ws-leave-room)
-  ;; (test-webs :room/create          set.room/ws-create-room)
-  ;; (test-webs :room/join            set.room/ws-join-room)
-  ;; (test-webs :room/fetch           set.room/ws-fetch-room)
-  ;; (test-webs :game/start           set.game/ws-start-game)
-  ;; (test-webs :game/submit-answers  set.game/ws-submit-answers)
+  (test-webs :ws/close             set.room/ws-leave-room)
+  (test-webs :room/create          set.room/ws-create-room)
+  (test-webs :room/join            set.room/ws-join-room)
+  (test-webs :room/fetch           set.room/ws-fetch-room)
+  (test-webs :game/start           set.game/ws-start-game)
+  (test-webs :game/submit-cards    set.game/ws-submit-cards)
   ;; (test-webs :game/update-answer   set.game/ws-update-answer)
   ;; (test-webs :game/next-category   set.game/ws-next-category)
 

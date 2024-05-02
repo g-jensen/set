@@ -21,3 +21,6 @@
         (room/push-room! room)
         (push-game-to-room! (gamec/->game (shuffle cardsc/deck)) room)
         (apic/ok room)))))
+
+(defn ws-submit-cards [{:keys [params connection-id] :as request}]
+  )
