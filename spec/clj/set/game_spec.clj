@@ -83,6 +83,23 @@
                                            :params {:selected-cards selected-cards}})]
         (should= :ok (:status response))
         (should= 1 (:points @boone))
+        (should= 1 (:found-sets-count @caravan))
         (should-have-invoked :push-to-players! {:with [players
                                                        :room/update
-                                                       [new-player]]})))))
+                                                       [new-player]]})))
+
+    (it "sends room back to lobby after 27 sets are found"
+      (db/tx (assoc @caravan :found-sets-count 26))
+      (let [players (map db/entity (:players @mojave))
+            selected-cards (take 3 cardsc/deck)
+            response (sut/ws-submit-cards {:connection-id (:conn-id @boone)
+                                           :params {:selected-cards selected-cards}})]
+        (should= :ok (:status response))
+        (should= 0 (:found-sets-count @caravan))
+        (should= :lobby (:state @mojave))
+        (should-have-invoked :push-to-players! {:with [players
+                                                       :room/update
+                                                       [@mojave]]})
+        (should-have-invoked :push-to-players! {:with [players
+                                                       :game/update
+                                                       @caravan]})))))

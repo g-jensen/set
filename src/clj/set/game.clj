@@ -8,6 +8,8 @@
             [set.room :as room]
             [set.gamec :as gamec]))
 
+(def max-set-count 5)
+
 (defn push-game-to-room! [game room]
   (let [players (map db/entity (:players room))]
     (dispatch/push-to-players! players :game/update game)))
@@ -23,6 +25,11 @@
         (push-game-to-room! game room)
         (apic/ok room)))))
 
+(defn maybe-back-to-lobby! [room game]
+  (when (>= (:found-sets-count game) max-set-count)
+    (push-game-to-room! (db/tx (assoc game :found-sets-count 0)) room)
+    (room/push-room! (db/tx (assoc room :state :lobby)))))
+
 (defn ws-submit-cards [{:keys [params connection-id] :as request}]
   (let [player (playerc/by-conn-id connection-id)
         room (roomc/by-player player)
@@ -32,4 +39,5 @@
     (when (cardsc/set? selected-cards)
       (push-game-to-room! updated-game room)
       (room/push-to-room! room [(db/tx (update player :points inc))]))
+    (maybe-back-to-lobby! room updated-game)
     (apic/ok)))
