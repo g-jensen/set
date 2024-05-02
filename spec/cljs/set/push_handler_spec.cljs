@@ -8,18 +8,25 @@
             [set.game :as game]
             [set.gamec :as gamec]
             [set.playerc :as playerc]
-            [set.spec-helperc :as sut]))
+            [set.spec-helperc :as sut]
+            [set.state :as state]))
 
 (describe "push handler"
   (fo/with-schemas)
-  (before (db/clear))
+  (before (db/clear)
+          (reset! state/push-count 0))
 
   (context "room/update"
     (it "db/tx*'s params"
       (let [player (playerc/->player "Yes Man")]
         (should= [] (db/find :player))
         (ws/push-handler {:kind :room/update :params [player]})
-        (should= [player] (mapv #(dissoc % :id) (db/find :player))))))
+        (should= [player] (mapv #(dissoc % :id) (db/find :player)))))
+
+    (it "increments push count"
+      (should= 0 @state/push-count)
+      (ws/push-handler {:kind :room/update :params [(playerc/->player "Yes Man")]})
+      (should= 1 @state/push-count)))
 
   (context "game/update"
     (it "db/tx's params"
@@ -34,4 +41,9 @@
         (game/select-card! game/state (second cardsc/deck))
         (should= (take 2 cardsc/deck) (:selected-cards @game/state))
         (ws/push-handler {:kind :game/update :params game})
-        (should= [] (:selected-cards @game/state))))))
+        (should= [] (:selected-cards @game/state))))
+
+    (it "increments push count"
+      (should= 0 @state/push-count)
+      (ws/push-handler {:kind :game/update :params (gamec/->game cardsc/deck)})
+      (should= 1 @state/push-count))))
