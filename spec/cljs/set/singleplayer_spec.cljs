@@ -43,6 +43,7 @@
         (wire/click! "#-card-4")
         (should-not= initial-game (db/ffind :game))
         (should= (gamec/process-card-submission @state/game selected-cards) (db/ffind :game))
+        (should= 1 (:found-sets-count @game/state))
         (should= [] (:selected-cards @game/state)))))
 
   (context "stats"
