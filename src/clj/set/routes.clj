@@ -60,6 +60,7 @@
    :room/join           'set.room/ws-join-room
    :room/fetch          'set.room/ws-fetch-room
    :game/start          'set.game/ws-start-game
+   :game/submit-cards   'set.game/ws-submit-cards
    })
 
 (defn sleep-for-10 [] (Thread/sleep 10000))
