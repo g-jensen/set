@@ -60,4 +60,9 @@
         (swap! game/state assoc :found-sets-count 2)
         (wire/flush)
         (should= "Found: 2" (wire/html! "#-found"))
-        (should= "Exist: 2" (wire/html! "#-exist"))))))
+        (should= "Exist: 2" (wire/html! "#-exist")))))
+
+  (context "how to play"
+    (it "exists"
+      (wire/render [sut/singleplayer game/state state/game])
+      (should-select "#-how-to-play"))))

@@ -2,6 +2,7 @@
   (:require [c3kit.bucket.api :as db]
             [set.cardsc :as cardsc]
             [set.gamec :as gamec]
+            [set.how-to-play :as htp]
             [set.page :as page]
             [set.game :as game]
             [set.state :as state]))
@@ -19,13 +20,18 @@
 (defmethod page/exiting! :singleplayer [_])
 
 (defn singleplayer [game-ratom state-ratom]
-  [:div.main-container
-   [:div.left-container
-    [stats game-ratom state-ratom]]
-   [:div.center
-    [game/card-buttons game-ratom state-ratom]]
-   [:div
-    [game/colorblind-button state-ratom]]])
+  [:<>
+   [:div.main-container
+     [:div.left-container
+      [stats game-ratom state-ratom]]
+     [:div.center
+      [game/card-buttons game-ratom state-ratom]]
+     [:div
+      [game/colorblind-button state-ratom]]]
+   [:div.main-container
+    [:div.left-container]
+    [:div.center
+     (htp/how-to-play)]]])
 
 (defmethod page/render :singleplayer [_]
   [singleplayer state/game game/state])
