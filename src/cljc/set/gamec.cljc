@@ -30,6 +30,11 @@
        (reset-cards-and-deck game cardsc/deck shuffle)
        game))))
 
+(defn create-game! [deck]
+  (let [game (->game deck)]
+    (db/tx game)
+    game))
+
 (defn- handle-invalid-state [{:keys [cards deck] :as game}]
   (if-not (and (cardsc/contains-set? cards) (> (count deck) 3))
     (reset-cards-and-deck game cardsc/deck shuffle)
