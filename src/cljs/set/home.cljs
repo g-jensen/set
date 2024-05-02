@@ -17,17 +17,18 @@
 
 (defn home [nickname-ratom]
   [:div
-   [:h1 "Welcome to Set"]
-   [:div
+   [:h1.text-align-center "Welcome to Set"]
+   [:div.center
     [:button {:id "-singleplayer-button"
               :on-click #(accountant/navigate! "/singleplayer")}
      "Singleplayer"]]
-   [:div
+   [:br]
+   [:div.center
     [:input {:type        "text"
              :id          "-nickname-input"
              :placeholder "Enter your nickname"
              :on-change   #(reset! nickname-ratom (wjs/e-text %))}]]
-   [:div
+   [:div.center
     [:button {:id       "-create-room-button"
               :on-click #(create-room! @nickname-ratom)}
      "Create Room"]]])
