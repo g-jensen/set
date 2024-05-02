@@ -21,10 +21,11 @@
 (defn start [room]
   (assoc room :state :started))
 
-(defn start! [room]
-  (let [room (start room)]
-    (db/tx room)
-    room))
+(defn assign-game-to-room [game room]
+  (assoc room :game (:id game)))
+
+(defn assign-game-to-room! [game room]
+  (db/tx (assign-game-to-room game room)))
 
 (defn remove-player [{:keys [players] :as room} player]
   (let [id (playerc/or-id player)
