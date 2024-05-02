@@ -21,6 +21,9 @@
 (defn start [room]
   (assoc room :state :started))
 
+(defn start! [room]
+  (db/tx (start room)))
+
 (defn remove-player [{:keys [players] :as room} player]
   (let [id (playerc/or-id player)
         players (remove #{id} players)]
