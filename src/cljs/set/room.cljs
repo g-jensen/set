@@ -112,6 +112,7 @@
             db/tx*))
 
 (defmethod page/entering! :room [_]
+  (mapv #(db/delete %) (db/find :game))
   (swap! game/state assoc :mode :multiplayer)
   (fetch-room!))
 

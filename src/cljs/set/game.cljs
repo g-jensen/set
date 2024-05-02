@@ -1,6 +1,8 @@
 (ns set.game
-  (:require [c3kit.bucket.api :as db]
+  (:require [c3kit.apron.corec :as ccc]
+            [c3kit.bucket.api :as db]
             [c3kit.wire.util :as util]
+            [c3kit.wire.websocket :as ws]
             [reagent.core :as reagent]
             [set.cardsc :as cardsc]
             [set.gamec :as gamec]
@@ -19,6 +21,11 @@
       (swap! state update :found-sets-count inc))
     (swap! state assoc :selected-cards [])))
 
+(defmethod on-three-cards-selected! :multiplayer [_]
+  (let [selected-cards (:selected-cards @state)]
+    (ws/call! :game/submit-cards {:selected-cards selected-cards} ccc/noop)
+    (swap! state assoc :selected-cards [])))
+
 (defn- selected? [state card]
   (some #{card} (:selected-cards state)))
 
@@ -29,7 +36,7 @@
   (swap! state-ratom #(select-card % card)))
 
 (defn- deselect-card [state card]
-  (update state :selected-cards #(remove #{card} %)))
+  (update state :selected-cards #(vec (remove #{card} %))))
 
 (defn deselect-card! [state-ratom card]
   (swap! state-ratom #(deselect-card % card)))

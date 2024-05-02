@@ -125,9 +125,6 @@
     #_(it "updates when player is added"
       (should-not-select (str "#-player-" (:id @fo/dogmeat)))
       (roomc/join-room! @sut/room @fo/dogmeat)
-      (prn @sut/room)
-      (prn @fo/mojave)
-      (prn (db/ffind-by :room :code @sut/code))
       (should-select (str "#-player-" (:id @fo/dogmeat)))))
 
   (context "start button"
@@ -171,4 +168,18 @@
     (it "doesn't display when in lobby"
       (with-redefs [sut/room (reagent/atom (assoc @sut/room :state :lobby))]
         (wire/render [sut/full-room sut/room sut/players])
-        (should-not-select "#-card-buttons")))))
+        (should-not-select "#-card-buttons")))
+
+    (context "three cards selected"
+      (it "send submission and updates game state"
+        (with-redefs [sut/room (reagent/atom (assoc @sut/room :state :started))
+                      state/game (reagent/atom (gamec/->game cardsc/deck))]
+          (let [selected-cards (mapv #(nth cardsc/deck %) (range 0 3))]
+            (wire/render [sut/full-room sut/room sut/players])
+            (wire/click! "#-card-0")
+            (wire/click! "#-card-1")
+            (wire/click! "#-card-2")
+            (should-have-invoked :ws/call! {:with [:game/submit-cards
+                                                   {:selected-cards selected-cards}
+                                                   ccc/noop]})
+            (should= [] (:selected-cards @game/state))))))))
