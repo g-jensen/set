@@ -72,7 +72,7 @@
         (should-not-have-invoked :ws/call!))))
 
   (context "nickname prompt or room"
-    (before (wire/render [sut/nickname-prompt-or-room state/nickname]))
+    (before (wire/render [sut/nickname-prompt-or-room sut/players state/nickname]))
 
     (it "renders nickname prompt if blank nickname"
       (reset! state/nickname "   ")
@@ -87,7 +87,7 @@
       (should-select "#-room")))
 
   (context "maybe render room"
-    (before (wire/render [sut/maybe-render-room sut/room]))
+    (before (wire/render [sut/maybe-render-room sut/room sut/players]))
 
     (it "renders error if no room"
       (sut/install-room! "m0jave")
@@ -99,13 +99,13 @@
     (it "renders error if trying to join when room already started"
       (with-redefs [sut/get-me (constantly nil)
                     sut/room   (reagent/atom (assoc @sut/room :state :started))]
-        (wire/render [sut/maybe-render-room sut/room])
+        (wire/render [sut/maybe-render-room sut/room sut/players])
         ;(db/tx (assoc @sut/room :state :started))
         (should-select "#-room-started")))
 
     (it "renders room"
       (with-redefs [sut/get-me (constantly @fo/benny)]
-        (wire/render [sut/maybe-render-room sut/room])
+        (wire/render [sut/maybe-render-room sut/room sut/players])
         (should-not-select "#-room-started")
         (should-not-select "#-room-not-found")
         (should-select "#-prompt-or-room"))))

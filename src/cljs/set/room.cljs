@@ -18,7 +18,7 @@
   (swap! state assoc :code code))
 (def code (reagent/track #(:code @state)))
 (def room (reagent/track #(db/ffind-by :room :code @code)))
-(def players (reagent/track #(map db/entity (:players @room))))
+(def players (reagent/track #(do @state/game (map db/entity (:players @room)))))
 
 (defn- host? [room player]
   (= (:id player) (:host room)))
@@ -91,18 +91,18 @@
                                  (join-room!))}
          "Join"]]])))
 
-(defn nickname-prompt-or-room [nickname-ratom]
+(defn nickname-prompt-or-room [players-ratom nickname-ratom]
   [:div {:id "-prompt-or-room"}
    (if (str/blank? @nickname-ratom)
      [nickname-prompt nickname-ratom]
-     [full-room room players])])
+     [full-room room players-ratom])])
 
-(defn maybe-render-room [room-ratom]
+(defn maybe-render-room [room-ratom players-ratom]
   (cond
     (not @room-ratom)
       [:h1 {:id "-room-not-found"} "Room not found!"]
     (or (lobby? @room-ratom) (get-me))
-      [nickname-prompt-or-room state/nickname]
+      [nickname-prompt-or-room players-ratom state/nickname]
     :else
       [:h1 {:id "-room-started"} "Room as already started. Try joining back later."]))
 
@@ -117,4 +117,4 @@
   (fetch-room!))
 
 (defmethod page/render :room [_]
-  [maybe-render-room room])
+  [maybe-render-room room players])
