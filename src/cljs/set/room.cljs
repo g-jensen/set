@@ -55,7 +55,6 @@
 
 (defn waiting [room-ratom]
   [:<>
-   [:h1.text-align-center "Set"]
    [:h2.center.categories-data "Waiting for host to start game..."]
    (htp/how-to-play)
    (when (host? @room-ratom (get-me))
@@ -70,6 +69,7 @@
     [full-players room-ratom players-ratom]]
    [:div.center
     [:div.game-container
+     [:h1.text-align-center "Set"]
      (if (= :lobby (:state @room))
        [waiting room-ratom]
        [game/card-buttons state/game game/state])]]])
@@ -112,6 +112,7 @@
             db/tx*))
 
 (defmethod page/entering! :room [_]
+  (swap! game/state assoc :mode :multiplayer)
   (fetch-room!))
 
 (defmethod page/render :room [_]

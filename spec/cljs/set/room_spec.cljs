@@ -28,7 +28,10 @@
 
   (context "entering"
     (it "fetches room"
-      (should-have-invoked :ws/call! {:with [:room/fetch {:room-code fo/mojave-code} db/tx*]})))
+      (should-have-invoked :ws/call! {:with [:room/fetch {:room-code fo/mojave-code} db/tx*]}))
+
+    (it "sets game mode to multiplayer"
+      (should= :multiplayer (:mode @game/state))))
 
   (context "nickname prompt"
     (before (wire/render [sut/nickname-prompt state/nickname]))
