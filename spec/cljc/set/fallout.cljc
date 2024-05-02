@@ -45,10 +45,11 @@
   (reset! boone-atom (playerc/create-player! "Boone" "conn-boone"))
   (reset! benny-atom (playerc/create-player! "Benny" "conn-benny"))
   (reset! dogmeat-atom (playerc/create-player! "Dogmeat" "conn-dogmeat"))
-  (reset! caravan-atom (db/tx (gamec/->game cardsc/deck)))
+  (reset! caravan-atom (gamec/create-game! cardsc/deck))
   (roomc/join-room! @mojave @yes-man)
   (roomc/join-room! @mojave @boone)
-  (roomc/join-room! @mojave @benny))
+  (roomc/join-room! @mojave @benny)
+  (roomc/assign-game-to-room! @caravan @mojave))
 
 (defn with-schemas
   ([] (with-schemas schemas))
