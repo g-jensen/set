@@ -46,18 +46,19 @@
                     [:li {:id (str "-player-" (:id player))}
                      (str (:nickname player) (when (host? @room-ratom player) " (Host)") " | " (:points player))]))]]])
 
-(defn start-button [room-ratom]
-  (when (host? @room-ratom (get-me))
-    [:div.center
-     [:button {:id "-start-button"
-               :on-click #(ws/call! :game/start {} db/tx)}
-      "Start Game"]]))
+(defn start-button []
+  [:div.center
+   [:button {:id "-start-button"
+             :on-click #(ws/call! :game/start {} db/tx)}
+    "Start Game"]])
 
 (defn waiting [room-ratom]
   [:<>
+   [:h1.text-align-center "Set"]
    [:h2.center.categories-data "Waiting for host to start game..."]
    (htp/how-to-play)
-   [start-button room-ratom]])
+   (when (host? @room-ratom (get-me))
+     [start-button room-ratom])])
 
 (defn full-room [room-ratom players-ratom]
   [:div.main-container
@@ -68,7 +69,7 @@
     [full-players room-ratom players-ratom]]
    [:div.center
     [:div.game-container
-     [:h1.text-align-center "Set"]
+     [:p (str @room-ratom)]
      [waiting room-ratom]]]])
 
 (defn nickname-prompt [_]

@@ -135,4 +135,9 @@
     (it "doesn't display for non-host"
       (with-redefs [sut/get-me (constantly @fo/benny)]
         (wire/render [sut/full-room sut/room sut/players])
-        (should-not-select "#-start-button")))))
+        (should-not-select "#-start-button")))
+
+    (it "starts game on click"
+      (wire/render [sut/start-button])
+      (wire/click! "#-start-button")
+      (should-have-invoked :ws/call! {:with [:game/start {} db/tx]}))))
