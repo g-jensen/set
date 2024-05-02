@@ -72,7 +72,7 @@
         (should-not-have-invoked :ws/call!))))
 
   (context "nickname prompt or room"
-    (before (wire/render [sut/nickname-prompt-or-room sut/players state/nickname]))
+    (before (wire/render [sut/nickname-prompt-or-room state/game sut/room sut/players state/nickname]))
 
     (it "renders nickname prompt if blank nickname"
       (reset! state/nickname "   ")
@@ -87,7 +87,7 @@
       (should-select "#-room")))
 
   (context "maybe render room"
-    (before (wire/render [sut/maybe-render-room sut/room sut/players]))
+    (before (wire/render [sut/maybe-render-room state/game sut/room sut/players]))
 
     (it "renders error if no room"
       (sut/install-room! "m0jave")
@@ -99,13 +99,13 @@
     (it "renders error if trying to join when room already started"
       (with-redefs [sut/get-me (constantly nil)
                     sut/room   (reagent/atom (assoc @sut/room :state :started))]
-        (wire/render [sut/maybe-render-room sut/room sut/players])
+        (wire/render [sut/maybe-render-room state/game sut/room sut/players])
         ;(db/tx (assoc @sut/room :state :started))
         (should-select "#-room-started")))
 
     (it "renders room"
       (with-redefs [sut/get-me (constantly @fo/benny)]
-        (wire/render [sut/maybe-render-room sut/room sut/players])
+        (wire/render [sut/maybe-render-room state/game sut/room sut/players])
         (should-not-select "#-room-started")
         (should-not-select "#-room-not-found")
         (should-select "#-prompt-or-room"))))
@@ -130,7 +130,7 @@
   (context "start button"
     (it "displays if in lobby"
       (with-redefs [sut/get-me (constantly @fo/yes-man)]
-        (wire/render [sut/full-room sut/room sut/players])
+        (wire/render [sut/full-room state/game sut/room sut/players])
         (db/tx (assoc @sut/room :state :lobby))
         (should-select "#-start-button")))
 
@@ -138,18 +138,18 @@
     (it "does not display if not in lobby"
       (with-redefs [sut/get-me (constantly @fo/yes-man)
                     sut/room (reagent/atom (assoc @sut/room :state :started))]
-        (wire/render [sut/full-room sut/room sut/players])
+        (wire/render [sut/full-room state/game sut/room sut/players])
         ;(db/tx (assoc @sut/room :state :started))
         (should-not-select "#-start-button")))
 
     (it "displays for host"
       (with-redefs [sut/get-me (constantly @fo/yes-man)]
-        (wire/render [sut/full-room sut/room sut/players])
+        (wire/render [sut/full-room state/game sut/room sut/players])
         (should-select "#-start-button")))
 
     (it "doesn't display for non-host"
       (with-redefs [sut/get-me (constantly @fo/benny)]
-        (wire/render [sut/full-room sut/room sut/players])
+        (wire/render [sut/full-room state/game sut/room sut/players])
         (should-not-select "#-start-button")))
 
     (it "starts game on click"
@@ -162,12 +162,12 @@
 
     (it "displays when not in lobby"
       (with-redefs [sut/room (reagent/atom (assoc @sut/room :state :started))]
-        (wire/render [sut/full-room sut/room sut/players])
+        (wire/render [sut/full-room state/game sut/room sut/players])
         (should-select "#-card-buttons")))
 
     (it "doesn't display when in lobby"
       (with-redefs [sut/room (reagent/atom (assoc @sut/room :state :lobby))]
-        (wire/render [sut/full-room sut/room sut/players])
+        (wire/render [sut/full-room state/game sut/room sut/players])
         (should-not-select "#-card-buttons")))
 
     (context "three cards selected"
@@ -175,7 +175,7 @@
         (with-redefs [sut/room (reagent/atom (assoc @sut/room :state :started))
                       state/game (reagent/atom (gamec/->game cardsc/deck))]
           (let [selected-cards (mapv #(nth cardsc/deck %) (range 0 3))]
-            (wire/render [sut/full-room sut/room sut/players])
+            (wire/render [sut/full-room state/game sut/room sut/players])
             (wire/click! "#-card-0")
             (wire/click! "#-card-1")
             (wire/click! "#-card-2")

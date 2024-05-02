@@ -3,5 +3,6 @@
             [reagent.core :as reagent]
             [set.page :as page]))
 
-(def game (reagent/track #(db/ffind :game)))
+(def push-count (reagent/atom 0))
+(def game (reagent/track #(do @push-count (db/ffind :game))))
 (def nickname (reagent/atom nil))

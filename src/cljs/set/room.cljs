@@ -17,8 +17,8 @@
 (defn install-room! [code]
   (swap! state assoc :code code))
 (def code (reagent/track #(:code @state)))
-(def room (reagent/track #(db/ffind-by :room :code @code)))
-(def players (reagent/track #(do @state/game (map db/entity (:players @room)))))
+(def room (reagent/track #(do @state/push-count (db/ffind-by :room :code @code))))
+(def players (reagent/track #(do @state/push-count (map db/entity (:players @room)))))
 
 (defn- host? [room player]
   (= (:id player) (:host room)))
@@ -60,7 +60,7 @@
    (when (host? @room-ratom (get-me))
      [start-button room-ratom])])
 
-(defn full-room [room-ratom players-ratom]
+(defn full-room [game-ratom room-ratom players-ratom]
   [:div.main-container
    {:id "-room"}
    [:div.left-container
@@ -72,7 +72,7 @@
      [:h1.text-align-center "Set"]
      (if (= :lobby (:state @room))
        [waiting room-ratom]
-       [game/card-buttons state/game game/state])]]])
+       [game/card-buttons game-ratom game/state])]]])
 
 (defn nickname-prompt [_]
   (let [local-nickname-ratom (reagent/atom nil)]
@@ -91,18 +91,18 @@
                                  (join-room!))}
          "Join"]]])))
 
-(defn nickname-prompt-or-room [players-ratom nickname-ratom]
+(defn nickname-prompt-or-room [game-ratom room-ratom players-ratom nickname-ratom]
   [:div {:id "-prompt-or-room"}
    (if (str/blank? @nickname-ratom)
      [nickname-prompt nickname-ratom]
-     [full-room room players-ratom])])
+     [full-room game-ratom room-ratom players-ratom])])
 
-(defn maybe-render-room [room-ratom players-ratom]
+(defn maybe-render-room [game-ratom room-ratom players-ratom]
   (cond
     (not @room-ratom)
       [:h1 {:id "-room-not-found"} "Room not found!"]
     (or (lobby? @room-ratom) (get-me))
-      [nickname-prompt-or-room players-ratom state/nickname]
+      [nickname-prompt-or-room game-ratom room-ratom players-ratom state/nickname]
     :else
       [:h1 {:id "-room-started"} "Room as already started. Try joining back later."]))
 
@@ -117,4 +117,4 @@
   (fetch-room!))
 
 (defmethod page/render :room [_]
-  [maybe-render-room room players])
+  [maybe-render-room state/game room players])
