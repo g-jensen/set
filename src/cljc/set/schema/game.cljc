@@ -6,6 +6,7 @@
    :id                s/id
    :cards             {:type :seq :spec {:type :any} :validate s/present? :message "must be present"}
    :deck              {:type :seq :spec {:type :any} :validate s/present? :message "must be present"}
+   :found-sets-count  {:type :int}
    })
 
 (def all [game])

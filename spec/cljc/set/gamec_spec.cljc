@@ -11,14 +11,16 @@
     (it "sets cards and deck"
       (should= {:kind :game
                 :cards (take 12 cardsc/deck)
-                :deck (drop 12 cardsc/deck)}
+                :deck (drop 12 cardsc/deck)
+                :found-sets-count 0}
                (sut/->game cardsc/deck)))
 
     (it "guarantees a set in cards"
       (let [shuffled-deck (shuffle cardsc/deck)]
         (should= {:kind :game
                   :cards (take 12 shuffled-deck)
-                  :deck (drop 12 shuffled-deck)}
+                  :deck (drop 12 shuffled-deck)
+                  :found-sets-count 0}
                  (sut/->game cardsc/deck cardsc-spec/cards-with-no-set)))))
 
   (let [{:keys [deck cards] :as game} (sut/->game cardsc/deck)]
@@ -62,4 +64,10 @@
           game (sut/->game [] (concat cards-with-set (drop 3 cardsc-spec/cards-with-no-set)))
           new-game (sut/process-card-submission game cards-with-set)]
       (should= (drop 12 shuffled-deck) (:deck new-game))
-      (should= (take 12 shuffled-deck) (:cards new-game)))))
+      (should= (take 12 shuffled-deck) (:cards new-game))))
+
+  (it "increments found set count"
+    (let [{:keys [cards] :as game} (sut/->game cardsc/deck)
+          selected-cards (take 3 cards)
+          new-game (sut/process-card-submission game selected-cards)]
+      (should= 1 (:found-sets-count new-game)))))

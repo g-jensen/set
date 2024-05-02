@@ -25,7 +25,7 @@
   ([deck]
    (->game (drop 12 deck) (take 12 deck)))
   ([deck cards]
-   (let [game {:kind :game :deck deck :cards cards}]
+   (let [game {:kind :game :deck deck :cards cards :found-sets-count 0}]
      (if-not (cardsc/contains-set? cards)
        (reset-cards-and-deck game cardsc/deck shuffle)
        game))))
@@ -51,7 +51,8 @@
   (if (cardsc/set? selected-cards)
     (-> (replace-cards game selected-cards)
         (take-from-deck)
-        (handle-invalid-state))
+        (handle-invalid-state)
+        (update :found-sets-count inc))
     game))
 
 (defn process-card-submission! [game selected-cards]
