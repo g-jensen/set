@@ -53,7 +53,7 @@
     (it "updates game"
       (let [selected-cards (take 3 cardsc/deck)
             old-game @caravan
-            response (sut/ws-submit-cards {:connection-id (:conn-id @yes-man)
+            response (sut/ws-submit-cards {:connection-id (:conn-id @boone)
                                            :params {:selected-cards selected-cards}})]
         (should= :ok (:status response))
         (should= (gamec/process-card-submission! old-game selected-cards) @caravan)))
@@ -62,7 +62,7 @@
       (let [players (map db/entity (:players @mojave))
             selected-cards (take 3 cardsc/deck)
             new-game (gamec/process-card-submission @caravan selected-cards)
-            response (sut/ws-submit-cards {:connection-id (:conn-id @yes-man)
+            response (sut/ws-submit-cards {:connection-id (:conn-id @boone)
                                            :params {:selected-cards selected-cards}})]
         (should= :ok (:status response))
         (should-have-invoked :push-to-players! {:with [players
@@ -70,7 +70,7 @@
                                                        new-game]})))
 
     (it "doesn't notify players if selected cards is not a set"
-      (let [response (sut/ws-submit-cards {:connection-id (:conn-id @yes-man)
+      (let [response (sut/ws-submit-cards {:connection-id (:conn-id @boone)
                                            :params {:selected-cards []}})]
         (should= :ok (:status response))
         (should-not-have-invoked :push-to-players!)))))

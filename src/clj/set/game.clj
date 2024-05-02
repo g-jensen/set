@@ -25,7 +25,7 @@
 
 (defn ws-submit-cards [{:keys [params connection-id] :as request}]
   (let [player (playerc/by-conn-id connection-id)
-        room (db/ffind-by :room :host (:id player))
+        room (roomc/by-player player)
         game (db/ffind-by :game :id (:game room))
         selected-cards (:selected-cards params)
         updated-game (gamec/process-card-submission! game selected-cards)]
