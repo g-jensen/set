@@ -63,6 +63,19 @@
         (should= "Exist: 2" (wire/html! "#-exist")))))
 
   (context "how to play"
+    (before (wire/render [sut/singleplayer game/state state/game]))
+
     (it "exists"
-      (wire/render [sut/singleplayer game/state state/game])
-      (should-select "#-how-to-play"))))
+      (should-select "#-how-to-play"))
+
+    (context "has a toggle"
+      (it "that exists"
+        (should-select "#-how-to-play-toggle"))
+
+      (it "that is checked by default"
+        (wire/checked? "#-how-to-play-toggle"))
+
+      (it "that updates how to play"
+        (should-select "#-how-to-play")
+        (wire/change! "#-how-to-play-toggle" false)
+        (should-not-select "#-how-to-play")))))
