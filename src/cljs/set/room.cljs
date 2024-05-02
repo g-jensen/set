@@ -44,12 +44,20 @@
      (util/with-react-keys
        (ccc/for-all [player @players-ratom]
                     [:li {:id (str "-player-" (:id player))}
-                     (str (:nickname player) (when (host? @room-ratom player) " (Host)"))]))]]])
+                     (str (:nickname player) (when (host? @room-ratom player) " (Host)") " | " (:points player))]))]]])
 
 (defn start-button [room-ratom]
   (when (host? @room-ratom (get-me))
     [:div.center
-     [:button {:id "-start-button"} "Start Game"]]))
+     [:button {:id "-start-button"
+               :on-click #(ws/call! :game/start {} db/tx)}
+      "Start Game"]]))
+
+(defn waiting [room-ratom]
+  [:<>
+   [:h2.center.categories-data "Waiting for host to start game..."]
+   (htp/how-to-play)
+   [start-button room-ratom]])
 
 (defn full-room [room-ratom players-ratom]
   [:div.main-container
@@ -61,10 +69,7 @@
    [:div.center
     [:div.game-container
      [:h1.text-align-center "Set"]
-     [:<>
-      [:h2.center.categories-data "Waiting for host to start game..."]
-      (htp/how-to-play)
-      [start-button room-ratom]]]]])
+     [waiting room-ratom]]]])
 
 (defn nickname-prompt [_]
   (let [local-nickname-ratom (reagent/atom nil)]

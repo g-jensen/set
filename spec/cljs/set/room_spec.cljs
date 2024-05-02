@@ -113,9 +113,9 @@
       (should-select "#-players"))
 
     (it "lists players with host"
-      (should= "Yes Man (Host)" (wire/html! (str "#-player-" (:id @fo/yes-man))))
-      (should= "Boone" (wire/html! (str "#-player-" (:id @fo/boone))))
-      (should= "Benny" (wire/html! (str "#-player-" (:id @fo/benny)))))
+      (should= "Yes Man (Host) | 0" (wire/html! (str "#-player-" (:id @fo/yes-man))))
+      (should= "Boone | 0" (wire/html! (str "#-player-" (:id @fo/boone))))
+      (should= "Benny | 0" (wire/html! (str "#-player-" (:id @fo/benny)))))
 
     ; [GMJ] Can't figure out how to get sut/room to update
     #_(it "updates when player is added"
