@@ -46,4 +46,4 @@
                                                        [@mojave]]})
         (should-have-invoked :push-to-players! {:with [players
                                                        :game/update
-                                                       (gamec/->game cardsc/deck)]})))))
+                                                       (gamec/->game (shuffle cardsc/deck))]})))))

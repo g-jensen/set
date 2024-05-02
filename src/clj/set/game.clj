@@ -19,5 +19,5 @@
       (apic/fail nil "Only the host can start the game!")
       (let [room (roomc/start! room)]
         (room/push-room! room)
-        (push-game-to-room! (gamec/->game cardsc/deck) room)
+        (push-game-to-room! (gamec/->game (shuffle cardsc/deck)) room)
         (apic/ok room)))))
