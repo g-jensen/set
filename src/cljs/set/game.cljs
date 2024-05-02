@@ -25,8 +25,14 @@
 (defn- select-card [state card]
   (update state :selected-cards conj card))
 
+(defn select-card! [state-ratom card]
+  (swap! state-ratom #(select-card % card)))
+
 (defn- deselect-card [state card]
   (update state :selected-cards #(remove #{card} %)))
+
+(defn deselect-card! [state-ratom card]
+  (swap! state-ratom #(deselect-card % card)))
 
 (defn- maybe-call-three-cards-selected! [state]
   (when (= 3 (count (:selected-cards state)))
@@ -34,8 +40,8 @@
 
 (defn- on-click-card! [state-ratom card]
   (if-not (selected? @state-ratom card)
-    (swap! state-ratom #(select-card % card))
-    (swap! state-ratom #(deselect-card % card)))
+    (select-card! state-ratom card)
+    (deselect-card! state-ratom card))
   (maybe-call-three-cards-selected! @state-ratom))
 
 (defn card->button [state-ratom card idx]
