@@ -8,7 +8,6 @@
    :code         {:type :string :validate s/present? :message "must be present"}
    :host         {:type :long}
    :players      {:type :seq :spec {:type :long} :validate s/present? :message "must be present"}
-   :round-start  {:type :instant}
    })
 
 (def all [room])
