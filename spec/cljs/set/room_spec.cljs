@@ -124,4 +124,15 @@
       (prn @sut/room)
       (prn @fo/mojave)
       (prn (db/ffind-by :room :code @sut/code))
-      (should-select (str "#-player-" (:id @fo/dogmeat))))))
+      (should-select (str "#-player-" (:id @fo/dogmeat)))))
+
+  (context "start button"
+    (it "displays for host"
+      (with-redefs [sut/get-me (constantly @fo/yes-man)]
+        (wire/render [sut/full-room sut/room sut/players])
+        (should-select "#-start-button")))
+
+    (it "doesn't display for non-host"
+      (with-redefs [sut/get-me (constantly @fo/benny)]
+        (wire/render [sut/full-room sut/room sut/players])
+        (should-not-select "#-start-button")))))

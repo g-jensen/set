@@ -22,6 +22,13 @@
 (defn- host? [room player]
   (= (:id player) (:host room)))
 
+(defn get-me []
+  (when ws/client
+    (playerc/by-conn-id (:id (:connection @ws/client)))))
+
+(defn- lobby? [room]
+  (= :lobby (:state room)))
+
 (defn- join-room! []
   (when-not (str/blank? @state/nickname)
     (ws/call! :room/join
@@ -39,6 +46,11 @@
                     [:li {:id (str "-player-" (:id player))}
                      (str (:nickname player) (when (host? @room-ratom player) " (Host)"))]))]]])
 
+(defn start-button [room-ratom]
+  (when (host? @room-ratom (get-me))
+    [:div.center
+     [:button {:id "-start-button"} "Start Game"]]))
+
 (defn full-room [room-ratom players-ratom]
   [:div.main-container
    {:id "-room"}
@@ -52,8 +64,7 @@
      [:<>
       [:h2.center.categories-data "Waiting for host to start game..."]
       (htp/how-to-play)
-      [:div.center
-       [:button "Start Game"]]]]]])
+      [start-button room-ratom]]]]])
 
 (defn nickname-prompt [_]
   (let [local-nickname-ratom (reagent/atom nil)]
@@ -77,13 +88,6 @@
    (if (str/blank? @nickname-ratom)
      [nickname-prompt nickname-ratom]
      [full-room room players])])
-
-(defn get-me []
-  (when ws/client
-    (playerc/by-conn-id (:id (:connection @ws/client)))))
-
-(defn- lobby? [room]
-  (= :lobby (:state room)))
 
 (defn maybe-render-room [room-ratom]
   (cond
