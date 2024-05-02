@@ -92,7 +92,7 @@
       (should-select "#-room-not-found")
       (should-not-select "#-nickname-prompt-or-room"))
 
-    ; can't figure out why I can't db/tx mojave to have started state
+    ; still can't figure out why I can't db/tx mojave to have started state
     (it "renders error if trying to join when room already started"
       (with-redefs [sut/get-me (constantly nil)
                     sut/room   (reagent/atom (assoc @sut/room :state :started))]
