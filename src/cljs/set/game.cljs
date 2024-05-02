@@ -62,8 +62,9 @@
   (update state :color-blind-mode? not))
 
 (defn colorblind-button [state-ratom]
-  [:<>
+  [:div
    [:input {:type "checkbox"
             :id "-color-blind-toggle"
+            :checked (:color-blind-mode? @state-ratom)
             :on-click #(swap! state-ratom toggle-color-blind)}]
    "color blind mode"])
