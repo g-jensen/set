@@ -8,7 +8,7 @@
             [set.room :as room]
             [set.gamec :as gamec]))
 
-(def max-set-count 5)
+(def max-set-count 27)
 
 (defn push-game-to-room! [game room]
   (let [players (map db/entity (:players room))]
@@ -27,7 +27,7 @@
 
 (defn maybe-back-to-lobby! [room game]
   (when (>= (:found-sets-count game) max-set-count)
-    (push-game-to-room! (db/tx (assoc game :found-sets-count 0)) room)
+    (push-game-to-room! (db/delete game) room)
     (room/push-room! (db/tx (assoc room :state :lobby)))))
 
 (defn ws-submit-cards [{:keys [params connection-id] :as request}]
