@@ -30,5 +30,6 @@
         selected-cards (:selected-cards params)
         updated-game (gamec/process-card-submission! game selected-cards)]
     (when (cardsc/set? selected-cards)
-      (push-game-to-room! updated-game room))
+      (push-game-to-room! updated-game room)
+      (room/push-to-room! room [(db/tx (update player :points inc))]))
     (apic/ok)))

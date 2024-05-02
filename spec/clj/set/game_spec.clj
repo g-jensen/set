@@ -73,4 +73,16 @@
       (let [response (sut/ws-submit-cards {:connection-id (:conn-id @boone)
                                            :params {:selected-cards []}})]
         (should= :ok (:status response))
-        (should-not-have-invoked :push-to-players!)))))
+        (should-not-have-invoked :push-to-players!)))
+
+    (it "increments points of player if selected cards is a set"
+      (let [players (map db/entity (:players @mojave))
+            selected-cards (take 3 cardsc/deck)
+            new-player (update @boone :points inc)
+            response (sut/ws-submit-cards {:connection-id (:conn-id @boone)
+                                           :params {:selected-cards selected-cards}})]
+        (should= :ok (:status response))
+        (should= 1 (:points @boone))
+        (should-have-invoked :push-to-players! {:with [players
+                                                       :room/update
+                                                       [new-player]]})))))
