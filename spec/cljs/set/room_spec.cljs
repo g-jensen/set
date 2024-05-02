@@ -1,5 +1,5 @@
 (ns set.room-spec
-  (:require-macros [speclj.core :refer [should-not= around stub should-have-invoked should-not-have-invoked with-stubs describe context it should= should-be-nil should-contain should should-not before should-not-be-nil]]
+  (:require-macros [speclj.core :refer [redefs-around should-not= around stub should-have-invoked should-not-have-invoked with-stubs describe context it should= should-be-nil should-contain should should-not before should-not-be-nil]]
                    [c3kit.wire.spec-helperc :refer [should-not-select should-select]])
   (:require [c3kit.apron.corec :as ccc]
             [c3kit.bucket.api :as db]
@@ -97,6 +97,7 @@
       (with-redefs [sut/get-me (constantly nil)
                     sut/room   (reagent/atom (assoc @sut/room :state :started))]
         (wire/render [sut/maybe-render-room sut/room])
+        ;(db/tx (assoc @sut/room :state :started))
         (should-select "#-room-started")))
 
     (it "renders room"
@@ -127,6 +128,20 @@
       (should-select (str "#-player-" (:id @fo/dogmeat)))))
 
   (context "start button"
+    (it "displays if in lobby"
+      (with-redefs [sut/get-me (constantly @fo/yes-man)]
+        (wire/render [sut/full-room sut/room sut/players])
+        (db/tx (assoc @sut/room :state :lobby))
+        (should-select "#-start-button")))
+
+    ; update problem again...
+    (it "does not display if not in lobby"
+      (with-redefs [sut/get-me (constantly @fo/yes-man)
+                    sut/room (reagent/atom (assoc @sut/room :state :started))]
+        (wire/render [sut/full-room sut/room sut/players])
+        ;(db/tx (assoc @sut/room :state :started))
+        (should-not-select "#-start-button")))
+
     (it "displays for host"
       (with-redefs [sut/get-me (constantly @fo/yes-man)]
         (wire/render [sut/full-room sut/room sut/players])
@@ -140,4 +155,17 @@
     (it "starts game on click"
       (wire/render [sut/start-button])
       (wire/click! "#-start-button")
-      (should-have-invoked :ws/call! {:with [:game/start {} db/tx]}))))
+      (should-have-invoked :ws/call! {:with [:game/start {} db/tx]})))
+
+  (context "card buttons"
+    (redefs-around [sut/get-me (constantly @fo/yes-man)])
+
+    (it "displays when not in lobby"
+      (with-redefs [sut/room (reagent/atom (assoc @sut/room :state :started))]
+        (wire/render [sut/full-room sut/room sut/players])
+        (should-select "#-card-buttons")))
+
+    (it "doesn't display when in lobby"
+      (with-redefs [sut/room (reagent/atom (assoc @sut/room :state :lobby))]
+        (wire/render [sut/full-room sut/room sut/players])
+        (should-not-select "#-card-buttons")))))

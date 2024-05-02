@@ -5,6 +5,7 @@
             [clojure.string :as str]
             [reagent.core :as reagent]
             [set.cardsc :as cardsc]
+            [set.game :as game]
             [set.page :as page]
             [c3kit.bucket.api :as db]
             [c3kit.wire.util :as util]
@@ -69,8 +70,9 @@
     [full-players room-ratom players-ratom]]
    [:div.center
     [:div.game-container
-     [:p (str @room-ratom)]
-     [waiting room-ratom]]]])
+     (if (= :lobby (:state @room))
+       [waiting room-ratom]
+       [game/card-buttons state/game game/state])]]])
 
 (defn nickname-prompt [_]
   (let [local-nickname-ratom (reagent/atom nil)]
