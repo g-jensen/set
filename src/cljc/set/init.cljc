@@ -6,6 +6,7 @@
             [c3kit.bucket.api :as db]
             [c3kit.bucket.memory]
             [c3kit.wire.api :as api]
+            #?(:clj [set.ws-transport :as ws-transport])
             [set.config :as config]
             [set.schema.full :as schema]
             [set.schema.player :as player]
@@ -22,7 +23,8 @@
            (db/set-impl! (db/create-db config/bucket schema/full-schema))))
 
 (defn configure-api! []
-  (api/configure! #?(:clj  {:ws-handlers 'set.routes/ws-handlers
-                            :version     (api/version-from-js-file (if config/development? "public/cljs/set_dev.js" "public/cljs/set.js"))}
+  (api/configure! #?(:clj  {:ws-handlers  'set.routes/ws-handlers
+                            :ws-transport ws-transport/transport
+                            :version      (api/version-from-js-file (if config/development? "public/cljs/set_dev.js" "public/cljs/set.js"))}
                      :cljs {:redirect-fn       core/goto!
                             })))
